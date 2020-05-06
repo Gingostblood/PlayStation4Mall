@@ -5,5 +5,6 @@
 
 公共技术：springboot、mysql、ajax、jquery、html、js、layui、thymeleaf
 
-后台管理系统:SpringSecurity、SpringDataJpa、MaxStaut、Aop、Echarts
-商城系统:Shiro、Mybatis、Validate
+后台管理系统:SpringSecurity、SpringDataJpa、MaxStaut、Aop、Echarts、EasyExcel(视情况而定)、Redis(视情况而定)
+
+商城系统:Shiro、Mybatis、Validate、Vue(视情况而定)
