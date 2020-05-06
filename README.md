@@ -3,7 +3,7 @@
 
 电玩商城毕业设计
 
-公共技术：springboot、mysql、ajax、jquery、html、js、layui、thymeleaf
+公共技术：Springboot、MySQL、Ajax、JQuery、HTML、js、layui、thymeleaf
 
 后台管理系统:SpringSecurity、SpringDataJpa、MaxStaut、Aop、Echarts、EasyExcel(视情况而定)、Redis(视情况而定)
 
