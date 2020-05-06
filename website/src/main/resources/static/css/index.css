@@ -1,0 +1,47 @@
+.show{
+    width: 1200px;
+    height: 800px;
+    /* background-color:blanchedalmond; */
+    margin-left: auto;
+    margin-right: auto;
+}
+.head{
+    margin-top: 10px;
+    height: 40px;
+      background-color:tan;
+    /* float: left; */
+    line-height: 40px;
+    width: 1200px;
+    color: #6C6C6C;
+    font-size: 16px;
+}
+.head a{
+    text-decoration: none;
+}
+.head .username{
+    color: #F22E00;
+    
+}
+.head .part2{
+    /* background-color: red; */
+    width: 600px;
+    color: black;
+    display: inline-block;
+    text-align: center;
+    line-height: 40px;
+}
+/* .overimg{
+    margin-left: 125px;
+}
+.headbar{
+    width: 950px;
+    margin-top: 20px;
+    margin-left: 125px;
+} */
+.main{
+    margin-left: 125px;
+    width: 950px;
+}
+.price{
+    color: red;
+}

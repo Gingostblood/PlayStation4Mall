@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/modules/layui.css" media="all">
+</head>
+<body>
+<table id="orderinfo" lay-filter="test"></table>
+
+
+<script src="js/JQuery/jquery-3.4.1.min.js"></script>
+<script src="js/layuiJs/layui.all.js"></script>
+<script src="js/layuiJs/element.js"></script>
+<script type="text/javascript">
+    $(function () {
+        layui.use('element',function () {
+            var element=layui.element;
+        });
+        var id = '[[${order_id}]]';
+        getTable("order/findOrderInfo?orderId=" + id);
+    })
+
+    function getTable(url) {
+        layui.use('table', function () {
+            var table = layui.table;
+            var form = layui.form;
+
+            table.render({
+                elem: '#orderinfo'
+                , height: 600
+                , url: url //数据接口
+                //设置分页信息，默认当前页参数名page,页面大小limit
+                , request: {
+                    limitName: "size"//修改layui封装的参数名limit->size
+                }
+                , response: {
+                    dataName: 'list'//修改layui封装的参数名limit->size
+                }
+                , cols: [
+                    [
+                        {field: 'id', title: '序号', width: 80, fixed: 'left'}
+                        , {field: 'itemName', title: '商品名', width: 250}
+                        , {field: 'num', title: '数量', width: 80, fixed: 'right'}
+
+                    ]
+                ]
+                , limit: 15
+                , page: {
+                    layout: ['count', 'prev', 'page', 'next', 'skip']
+                    , curr: 1
+                    , groups: 3
+                    , first: false
+                    , last: false
+                }//开启分页
+            });
+        });
+    }
+</script>
+</body>
+</html>

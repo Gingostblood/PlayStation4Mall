@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/modules/layui.css" media="all">
+</head>
+<body>
+<div class="layui-row">
+    <div class="layui-col-xs6">
+        <div class="grid-demo grid-demo-bg1">
+            <div id="demo1" style="width: 600px;height:400px;"></div>
+            <div id="demo2" style="width: 600px;height:400px;"></div>
+        </div>
+    </div>
+    <div class="layui-col-xs6">
+        <div class="grid-demo">
+            <div id="demo3" style="width: 600px;height:400px;"></div>
+            <div id="demo4" style="width: 600px;height:400px;"></div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+<script src="js/JQuery/jquery-3.4.1.min.js"></script>
+<script src="js/EchartsJs/echarts.min.js"></script>
+<script src="js/layuiJs/layui.all.js"></script>
+<script src="js/layuiJs/element.js"></script>
+<script type="text/javascript">
+    $(function () {
+        layui.use('element',function () {
+            var element=layui.element;
+        });
+        getEchartsBar(1);
+        getEchartsBar(2);
+        getEchartsPie();
+    })
+    function getEchartsBar(pid){
+        var _text="";
+        if (pid==1){
+            _text ="PS4游戏销量"
+        }else{
+            _text="PS4周边销量"
+        }
+        $.ajax({
+            type: "get",
+            url: "echarts/findItemBar",
+            data: {
+                pid: pid
+            },
+            success: function (res) {
+                var mychart = echarts.init($("#demo"+pid).get(0));
+                var option = {
+                    title: {
+                        text: _text
+                    },
+                    tooltip: {},
+                    legend: {
+                        data: ['销量']
+                    },
+                    xAxis: {
+                        data: res.data.name
+                    },
+                    yAxis: {},
+                    series: [{
+                        name: '销量',
+                        type: 'bar',
+                        data: res.data.sales
+                    }]
+                };
+                mychart.setOption(option);
+            }
+        })
+    };
+    function getEchartsPie() {
+        $.ajax({
+            type:"get",
+            url: "echarts/findItemPie",
+            success:function (res) {
+                echarts.init($("#demo3").get(0)).setOption({
+                    title: {
+                        text: "剩余库存一览"
+                    },
+                    series : [
+                        {
+                            name: '访问来源',
+                            type: 'pie',
+                            radius: '55%',
+                            data:res.data
+                        }
+                    ]
+                })
+            }
+        })
+    }
+
+
+</script>
+</html>

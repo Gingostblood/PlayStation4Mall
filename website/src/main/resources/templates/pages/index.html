@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gingost</title>
+    <link rel="stylesheet" href="css/index.css" media="all">
+    <link rel="stylesheet" href="layui/css/layui.css">
+</head>
+
+<body>
+<div class="show">
+    <div class="head">
+        <a>欢迎你,</a>
+        <a class="username" href=""></a>&nbsp;|
+        <a href="">注销</a>
+
+        <div class="part2">
+            nmsl
+        </div>
+        <a href="" class="index">
+            <i class="layui-icon">&#xe68e;</i>
+            首页</a>&nbsp;&nbsp;
+        <a href="" class="index">
+            <i class="layui-icon">&#xe770;</i>
+            个人中心</a>&nbsp;&nbsp;
+        <a href="" class="index">
+            <i class="layui-icon">&#xe657;</i>
+            购物车</a>&nbsp;&nbsp;
+        <a href="">
+            <i class="layui-icon">&#xe626;</i>
+            在线客服</a>&nbsp;&nbsp;
+        <a href="">
+            <i class="layui-icon">&#xe7ae;</i>
+            关于我</a>&nbsp;&nbsp;
+    </div>
+    <div class="main">
+        <div class="overimg">
+            <div class="layui-carousel" id="overimg" style="margin-top: 50px;">
+                <div carousel-item>
+                    <div><img src="img/overimg/1.jpg" alt=""></div>
+                    <div><img src="img/overimg/2.jpg" alt=""></div>
+                    <div><img src="img/overimg/3.jpg" alt=""></div>
+                    <div><img src="img/overimg/4.jpg" alt=""></div>
+                    <div><img src="img/overimg/5.jpg" alt=""></div>
+                </div>
+            </div>
+            <div style="text-align: center; font-size: 18px;">爆款热销</div>
+        </div>
+
+        <div class="headbar">
+            <ul class="layui-nav" lay-filter="" style="margin-top: 10px;">
+                <li class="layui-nav-item layui-this"><a href="">全部商品</a></li>
+                <li class="layui-nav-item"><a href="">ps4游戏</a>
+                    <dl class="layui-nav-child" id="fristMenu"></dl>
+                </li>
+                <li class="layui-nav-item"><a href="">ps4周边</a>
+                    <dl class="layui-nav-child" id="secondMenu"></dl>
+                </li>
+                <li class="layui-nav-item"><a href="">热销商品</a></li>
+                <li class="layui-nav-item"><a href="">最新上架</a></li>
+                <li class="layui-nav-item"><a href="">官方资讯</a></li>
+                <li class="layui-nav-item"><a href="">精选攻略</a></li>
+            </ul>
+        </div>
+
+        <div style=" margin-top: 10px;" id="item">
+            <div id="img"></div>
+            <div id="title"></div>
+
+        </div>
+        <hr>
+        <div id="page"></div>
+    </div>
+</div>
+
+
+</body>
+<script src="layui/layui.all.js"></script>
+<script src="js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        doLoadImg();
+        doLoadMenu(1, 2);
+        getLoginUser();
+    })
+
+    layui.use('element', function () {
+        var element = layui.element;
+    });
+    layui.use('carousel', function () {
+        var carousel = layui.carousel;
+        //建造实例
+        carousel.render({
+            elem: '#overimg'
+            , width: '950px' //设置容器宽度
+            , height: '400px'
+            , arrow: 'always' //始终显示箭头
+            , anim: 'fade' //切换动画方式
+        });
+    });
+    function getLoginUser() {
+        $.get("user/getLoginUser",function (res) {
+            console.log(res)
+            $(".username").html(res.data.username);
+        })
+    }
+
+    //可以优化但是没必要
+    function doLoadMenu(id1, id2) {
+        $.ajax({
+            url: "menu/findMenuByPid",
+            type: "get",
+            data: {
+                pid: id1
+            },
+            success: function (res) {
+                var str = "";
+                for (var i = 0; i < res.data.length; i++) {
+                    str += "<dd ><a href='javascript:;' id=" + res.data[i].id + " onclick='doOnClick(this)'>" + res.data[i].name + " </a></dd>"
+                }
+                $("#fristMenu").html(str)
+            }
+        })
+
+        $.ajax({
+            url: "menu/findMenuByPid",
+            type: "get",
+            data: {
+                pid: id2
+            },
+            success: function (res) {
+                var str = "";
+                for (var i = 0; i < res.data.length; i++) {
+                    str += "<dd ><a href='javascript:;' id=" + res.data[i].id + ">" + res.data[i].name + "</a></dd>"
+                }
+                $("#secondMenu").html(str)
+            }
+        })
+    }
+
+    // 绑定点击事件
+    function doOnClick(obj) {
+        var pid = $(obj).prop("id");
+        doLoadImg(pid)
+    }
+
+    // 复用查询
+    function doLoadImg(pid) {
+        $.ajax({
+            type: "get",
+            url: "item/getItemCount",
+            async: false,
+            data: {
+                pid: pid
+            },
+            success: function (count) {
+                layui.use('laypage', function () {
+                    var laypage = layui.laypage;
+
+                    //执行一个laypage实例
+                    laypage.render({
+                        elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+                        , count: count //数据总数，从服务端得到
+                        , limit: 24
+                        , jump: function (obj, first) {
+                            $.ajax({
+                                type: "get",
+                                url: "item/findAllItem",
+                                async: false,
+                                data: {
+                                    pid: pid,
+                                    page: obj.curr
+                                },
+                                success: function (res) {
+                                    doHandlerImg(res.data)
+                                }
+                            })
+                        }
+                    });
+                });
+            }
+        })
+    }
+
+    function doHandlerImg(data) {
+        console.log(data);
+        var str1 = "";
+        for (var i = 0; i < data.length; i++) {
+            str1 += "<div style='width: 230px; height: 270px; float: left; border:1px wheat solid;margin-top: 5px'>" +
+                "<a href='/getItemInfo?id="+ data[i].id+"&lezzy="+Math.random()+"' target='_blank'> <img src=" + data[i].itemLogo + " alt='' width='230px'>" +
+                "<ul>" +
+                "<li style='color: #3366cc ; font-size: 16px;'>" + data[i].itemName + "</li>" +
+                "<li style='color: red ; font-size: 16px;'>¥" + data[i].itemPrice + "</li>" +
+                "</ul>" +
+                "</a>" +
+                "</div>" +
+                "<div style='width: 5px; height: 270px; float: left;'></div>"
+        }
+        console.log(str1)
+        $("#img").html(str1)
+    }
+</script>
+</html>

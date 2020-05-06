@@ -1,0 +1,190 @@
+@charset "UTF-8";
+
+#head {
+	margin-left: auto;
+	margin-right: auto;
+	width: 1200px;
+	height: 90px;
+	/* background: cyan; */
+}
+
+#head #head_logo {
+	width: 190px;
+	height: 90px;
+	float: left;
+	background: url("../img/logo.png");
+}
+
+#middle {
+	width: 100%;
+	height: 650px;
+	background: red;
+	padding-top: 80px;
+}
+
+#middle form {
+	width: 380px;
+	height: 525px;
+	background: cyan;
+	background: white;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#middle #regmsg {
+	font-size: 20px;
+	height: 60px;
+	font-weight: 800;
+	text-indent: 30px;
+}
+
+#middle #msg {
+	padding-left: 30px;
+	font-size: 16px;
+	/* text-indent: 15px; */
+	color: red;
+}
+
+#middle .alertmsg {
+	padding-left: 30px;
+	font-size: 8px;
+	line-height: 10px;
+	height: 10px;
+	color: #6c6c6c;
+}
+
+#middle form table tr td input {
+	margin-left: 30px;
+	font-size: 18px;
+	width: 300px;
+	height: 40px;
+	text-indent: 50px;
+	color: #999;
+	border: 1px solid #dbdbdb;
+}
+
+#middle form table tr td #agree {
+	margin-left: 110px;
+	margin-right: 1px;
+	width: 12px;
+	height: 12px;
+}
+
+#middle a {
+	font-size: 16px;
+	text-decoration: none;
+	
+}
+#middle #fuckcss{
+	margin-left: 200px;
+}
+#middle #ok {
+	margin-top: 10px;
+	width: 303px;
+	height: 50px;
+	font-size: 20px;
+	font-weight: 700;
+	letter-spacing: 20px;
+	background: #f52b00;
+	color: #fff;
+	text-align: center;
+	text-indent: 20px;
+}
+
+#middle form table tr td input[name='username'] {
+	background: url("../img/用户头像.png") no-repeat;
+}
+
+#middle form table tr td input[name='userpwd'] {
+	background: url("../img/锁.png") no-repeat;
+}
+
+#middle form table tr td input[name='repwd'] {
+	background: url("../img/锁.png") no-repeat;
+}
+
+#middle form table tr td input[name='useremail'] {
+	background: url("../img/电子邮件.png") no-repeat;
+}
+
+/*#middle form table tr td input[name='question'] {*/
+/*	background: url("../img/问题.png") no-repeat;*/
+/*}*/
+
+/*#middle form table tr td input[name='answer'] {*/
+/*	background: url("../img/答案.png") no-repeat;*/
+/*}*/
+
+#middle form table tr td input[name='userphone'] {
+	background: url("../img/手机.png") no-repeat;
+}
+
+#down {
+	font-size: 14px;
+	text-align: center;
+}
+
+#down a {
+	font-size: 14px;
+	color: #6c6c6c;
+	text-decoration: none;
+	text-align: center;
+}
+
+hr {
+	width: 1200px;
+}
+
+#LezzyGingost {
+	font-size: 14px;
+	color: #9c9c9c;
+	text-align: center;
+}
+
+#zhezhao {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	background: #000;
+	width: 100%;
+	height: 100%;
+	opacity: 0.5;
+}
+
+#tankuang {
+	position: relative;
+	background: #fff;
+	width: 50%;
+	height: 80%;
+	border-radius: 5px;
+	margin: 5% auto;
+}
+
+#header {
+	height: 40px;
+	background-color: #FF0000;
+	line-height: 40px;
+	text-align: center;
+}
+
+#txt {
+	width: 840px;
+	height: 650px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 25px;
+}
+
+#btn {
+	margin-left: 455px;
+	height: 30px;
+	width: 50px;
+	margin-top: 10px;
+	text-align: center;
+	letter-spacing: 5px
+}
+
+textarea {
+	font-size: 20px;
+	color: #000000;
+}

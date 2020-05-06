@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/modules/layui.css" media="all">
+</head>
+<body>
+<table id="orders" lay-filter="test"></table>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="show">查看详情</a>
+</script>
+
+<script src="js/JQuery/jquery-3.4.1.min.js"></script>
+<script src="js/layuiJs/layui.all.js"></script>
+<script src="js/layuiJs/element.js"></script>
+<script type="text/javascript">
+    $(function () {
+        layui.use('element',function () {
+            var element=layui.element;
+        });
+        getTable("order/findFinish");
+    })
+
+    function getTable(url) {
+        layui.use('table', function () {
+            var table = layui.table;
+            var form = layui.form;
+
+            table.render({
+                elem: '#orders'
+                , height: 600
+                , url: url //数据接口
+                //设置分页信息，默认当前页参数名page,页面大小limit
+                , request: {
+                    limitName: "size"//修改layui封装的参数名limit->size
+                }
+                , response: {
+                    dataName: 'list'//修改layui封装的参数名limit->size
+                }
+                , cols: [
+                    [{field: 'id', title: '序号', width: 80, fixed: 'left'}
+                        , {field: 'uuid', title: '订单编号', width: 150}
+                        , {field: 'creatTime', title: '创建时间', width: 180, sort: true}
+                        , {field: 'address', title: '收货地址', width: 500}
+                        , {field: 'accepter', title: '收件人', width: 100}
+                        , {field: 'phone', title: '联系电话', width: 150}
+                        //开启右侧工具栏
+                        , {fixed: 'right', width: 300, align: 'center', title: '操作', toolbar: '#barDemo'}
+                    ]
+                ]
+                , limit: 10
+                , page: {
+                    layout: ['count', 'prev', 'page', 'next', 'skip']
+                    , curr: 1
+                    , groups: 3
+                    , first: false
+                    , last: false
+                }//开启分页
+            });
+            table.on('tool(test)', function (obj) {
+                var id = obj.data.id;
+                var event = obj.event;
+                if (event == 'show') {
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.open({
+                            type: 2,
+                            area: ['1200px', '800px'],
+                            btn: '确定',
+                            closeBtn: 2,
+                            anim: 5,
+                            yes: function (index, layero) {
+                                layer.close(index);
+                            },
+                            title: '订单详情',
+                            content: 'orders_info?id=' + id
+                        })
+                    })
+                }
+            });
+        });
+    };
+</script>
+</body>
+</html>
