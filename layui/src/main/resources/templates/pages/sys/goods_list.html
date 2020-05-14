@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/modules/layui.css" media="all">
+</head>
+<body>
+
+<table id="item" lay-filter="test"></table>
+<script type="text/html" id="statu">
+    <input type="checkbox" name="{{d.id}}" value="{{d.statu}}" lay-skin="switch" lay-text="上架|下架"
+           lay-filter="changeStatu" {{ d.statu== 1 ? 'checked' : '' }}>
+</script>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="add">新增商品
+            <i class="layui-icon">&#xe654;</i>
+        </button>
+        <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">批量删除
+            <i class="layui-icon">&#x1006;</i>
+        </button>
+        <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="refresh">刷新
+            <i class="layui-icon">&#xe666;</i>
+        </button>
+    </div>
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script src="js/JQuery/jquery-3.4.1.min.js"></script>
+<script src="js/layuiJs/layui.all.js"></script>
+<script src="js/layuiJs/element.js"></script>
+<script>
+
+    $(function () {
+        layui.use('element',function () {
+            var element=layui.element;
+        });
+        var url = "item/findAll";
+        getTable(url);
+    })
+
+    function getTable(url) {
+        layui.use('table', function () {
+            var table = layui.table;
+            var form = layui.form;
+            //第一个实例
+            table.render({
+                elem: '#item'
+                , toolbar: '#toolbarDemo'
+                , height: 600
+                , url: url //数据接口
+                //设置分页信息，默认当前页参数名page,页面大小limit
+                , request: {
+                    limitName: "size"//修改layui封装的参数名limit->size
+                }
+                , response: {
+                    dataName: 'list'//修改layui封装的参数名limit->size
+                }
+                , cols: [
+                    [{type: 'checkbox', fixed: 'left'}
+                        , {field: 'id', title: 'ID', width: 80}
+                        , {field: 'itemName', title: '商品名', width: 180}
+                        , {field: 'itemPrice', title: '价格', width: 80, sort: true}
+                        , {field: 'itemStock', title: '库存', width: 80}
+                        , {field: 'itemSales', title: '销量', width: 80, sort: true}
+                        , {field: 'menuName', title: '类目', width: 130}
+                        , {field: 'creatTime', title: '创建时间', width: 300}
+                        , {field: 'updateTime', title: '修改时间', width: 300, sort: true}
+                        , {field: 'statu', title: '状态', width: 80, templet: '#statu', unresize: true}
+                        //开启右侧工具栏
+                        , {fixed: 'right', width: 200, align: 'center', title: '操作', toolbar: '#barDemo'}
+
+                    ]
+                ]
+                , limit: 10
+                , page: {
+                    layout: ['count', 'prev', 'page', 'next', 'skip']
+                    , curr: 1
+                    , groups: 3
+                    , first: false
+                    , last: false
+                }//开启分页
+            });
+            form.on('switch(changeStatu)', function (obj) {
+                //layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
+                var id = this.name;
+                console.log(this.name);
+                if (obj.value == 1) {
+                    alert("确定要将该商品下架吗？");
+                    $.ajax({
+                        type: "put",
+                        async: false,
+                        url: "item/changeStatu",
+                        data: {
+                            id: id
+                        },
+                        success: function (res) {
+                            alert(res.msg)
+                        }
+                    })
+                    getTable("/item/findAll");
+                } else {
+                    alert("确定要将该商品上架吗？");
+                    $.ajax({
+                        type: "put",
+                        async: false,
+                        url: "/item/changeStatu",
+                        data: {
+                            id: id
+                        },
+                        success: function (res) {
+                            alert(res.msg)
+                        }
+                    })
+                }
+
+
+            })
+            //只测工具栏能为tool(lay-filter值),obj.data才是获取当前行的数据
+            table.on('tool(test)', function (obj) {
+                var data = obj.data.id;
+                var event = obj.event;
+                if (event == 'detail') {
+                    //ajax事件，剩下的if省略
+                    console.log(data);
+                } else if (event == 'del') {
+                    alert("确定要删除该商品吗？");
+                    $.ajax({
+                        type: "delete",
+                        async: false,
+                        url: "item/deleteItemById",
+                        data: {
+                            id: data
+                        },
+                        success: function (res) {
+                            alert(res.msg)
+                        }
+                    })
+                    getTable("/item/findAll");
+                }
+            });
+            table.on('toolbar(test)', function (obj) {
+                var test = obj.config;
+                console.log(test);
+                //记住checkStatus(obj.config.id).data;才是获取一个行级对象数组
+                var res = table.checkStatus(obj.config.id).data;
+                console.log(res);
+                if (obj.event == 'add') {
+                    /*                var array=[];
+                                    if(res.length==0){
+                                        alert("请选中至少一行");
+                                        return false;
+                                    }else{
+                                        for (i=0;i<res.length;i++){
+                                            array.push(res[i].id);
+                                        }
+                                    }
+                                    //要么传递一个数组，要么传递一个toString后的字符串，都行
+                                    console.log(array.toString());*/
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.open({
+                            type: 2,
+                            area: ['1200px', '800px'],
+                            btn: '确定',
+                            closeBtn: 2,
+                            anim: 5,
+                            yes: function (index, layero) {
+                                layer.close(index);
+                            },
+                            title: '新增商品',
+                            content: 'goods_add'
+                        })
+                    });
+                } else if (obj.event == 'delete') {
+                    var array = [];
+                    if (res.length == 0) {
+                        alert("请至少选中一行数据");
+                    } else {
+                        for (i = 0; i < res.length; i++) {
+                            array.push(res[i].id);
+                        }
+                        //console.log(array);
+                        $.ajax({
+                            type: "delete",
+                            async: false,
+                            dataType: "json",
+                            url: "item/deleteItemByIds",
+                            data: {
+                                ids: array.toString()
+                            },
+                            success: function (res) {
+                                alert(res.msg);
+                            }
+                        });
+                        getTable("/item/findAll");
+                    }
+                } else if (obj.event=='refresh') {
+                    alert("你将会丢失当前进度，确定要刷新吗");
+                    getTable("/item/findAll");
+                }
+            })
+        });
+    }
+
+</script>
+</body>
+</html>

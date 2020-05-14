@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gingost.website.dao.ItemDao">
+    <select id="findAllItem" resultType="com.gingost.website.domain.Item">
+select * from item limit #{page},24;
+    </select>
+</mapper>

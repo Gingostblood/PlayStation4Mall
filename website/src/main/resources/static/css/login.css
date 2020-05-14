@@ -1,0 +1,116 @@
+@charset "UTF-8";
+
+#head {
+	margin-left: auto;
+	margin-right: auto;
+	width: 1200px;
+	height: 90px;
+	/* background: cyan; */
+}
+
+#head #head_logo {
+	width: 190px;
+	height: 90px;
+	float: left;
+	background: url("../img/logo.png");
+}
+
+#middle {
+	width: 100%;
+	height: 500px;
+	border: 1px solid #f0f0f0;
+	border-width: 1px 1px;
+	background: red;
+	padding-top: 100px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#middle form {
+	width: 370px;
+	height: 380px;
+	margin-left: 1150px;
+	display: inline-block;
+	background: white;
+}
+
+#middle #logmsg {
+	height: 60px;
+	line-height: 60px;
+	font-size: 20px;
+	font-weight: 800;
+	text-indent: 30px;
+}
+
+#middle #alertmsg {
+	padding-left: 30px;
+	font-size: 16px;
+	/* text-indent: 15px; */
+	color: red;
+}
+
+#middle #space {
+	height: 30px;
+}
+
+#middle #space2 {
+	height: 20px;
+}
+
+#middle form table tr td input {
+	margin-left: 30px;
+	font-size: 18px;
+	width: 300px;
+	height: 40px;
+	text-indent: 50px;
+	color: #999;
+	border: 1px solid #dbdbdb;
+}
+
+#middle form table tr td input[name='username'] {
+	background: url("../img/用户头像.png") no-repeat;
+}
+
+#middle form table tr td input[name="userpwd"] {
+	background: url("../img/锁.png") no-repeat;
+}
+
+#middle form table tr td input[name='ok'] {
+	height: 50px;
+	font-size: 20px;
+	font-weight: 700;
+	letter-spacing: 20px;
+	background: #f52b00;
+	color: #fff;
+	text-align: center;
+	text-indent: 20px;
+}
+
+#middle form table tr td a {
+	font-size: 14px;
+	color: #6c6c6c;
+	text-decoration: none;
+	padding-left: 50px;
+}
+
+#down {
+	font-size: 14px;
+	text-align: center;
+}
+
+#down a {
+	font-size: 14px;
+	color: #6c6c6c;
+	text-decoration: none;
+	text-align: center;
+}
+
+hr {
+	width: 1200px;
+}
+
+#LezzyGingost {
+	font-size: 14px;
+	color: #9c9c9c;
+	text-align: center;
+}

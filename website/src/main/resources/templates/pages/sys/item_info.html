@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <title>Document</title>
+</head>
+
+<body>
+<div class="show">
+    <input type="hidden" id="userid">
+    <div class="head">
+        <a>欢迎你,</a>
+        <a class="username" href=""></a>&nbsp;|
+        <a href="">注销</a>
+
+        <div class="part2">
+
+        </div>
+        <a href="" class="index">
+            <i class="layui-icon">&#xe68e;</i>
+            首页</a>&nbsp;&nbsp;
+        <a href="" class="index">
+            <i class="layui-icon">&#xe770;</i>
+            个人中心</a>&nbsp;&nbsp;
+        <a href="" class="index">
+            <i class="layui-icon">&#xe657;</i>
+            购物车</a>&nbsp;&nbsp;
+        <a href="">
+            <i class="layui-icon">&#xe626;</i>
+            在线客服</a>&nbsp;&nbsp;
+        <a href="">
+            <i class="layui-icon">&#xe7ae;</i>
+            关于我</a>&nbsp;&nbsp;
+    </div>
+
+    <div class="main" style=" height: 1000px;">
+        <div class="item_head" style="height: 400px; ">
+            <div style="float: left;" id="itemLogo">
+
+            </div>
+            <div style="float:left;width: 400px;height: 400px;">
+                <div style="font-size: 25px; margin-top: 50px;margin-left: 20px;"><a id="itemName"></a></div>
+                <div style="font-size: 18px; margin-top: 15px; margin-left: 20px;"><a>价格</a><a
+                        style="font-size: 24px;margin-left: 20px; color: #f40;" id="itemPrice"></a></div>
+                <div style="font-size: 18px; margin-top: 15px; margin-left: 20px;"><a>交易成功</a><a
+                        style="font-size: 24px;margin-left: 20px; color: #6c6c6c;" id="itemSales"></a></div>
+                <div style="font-size: 18px; margin-top: 15px; margin-left: 20px;"><a>累计评论</a><a
+                        style="font-size: 24px;margin-left: 20px; color: #6c6c6c;"  id="itemMsg">200</a></div>
+                <div style="font-size: 18px; margin-top: 15px; margin-left: 20px;"><a>平均得分</a><a
+                        style="font-size: 24px;margin-left: 20px; color: orange;" id="itemMark">4.8</a></div>
+                <div style="margin-top: 20px; margin-left: 20px;"><a>数量</a>
+                    <button id="del"
+                            style="border: 1px solid #ccc; width: 26px; height: 26px; line-height: 26px; padding: 0; text-align: center; background-color: #ededed;overflow: hidden;">-</button>
+                    <input type="text" name="" id="num" value="1"
+                           style="margin: 0; padding: 0; width: 48px; height: 26px;font-size: 16px; line-height: 26px; text-align: center; color: #666; border: 1px solid #ccc; outline: 0; background: #FFF;">
+                    <button id="add"
+                            style="border: 1px solid #ccc; width: 26px; height: 26px; line-height: 26px; padding: 0; text-align: center; background-color: #ededed;overflow: hidden;">+</button><a id="itemStock"></a>
+                </div>
+                <div style="margin-top: 20px; margin-left: 20px;">
+                    <button id="sure"
+                            style="width: 180px; color: #FFF; border-color: #f40; background: #f40; height: 38px; text-align: center; font-size: 16px; line-height: 38px; border-style: solid; border-radius: 2px; letter-spacing: 2px;"><i
+                            class="layui-icon">&#xe698;</i>加入购物车</button>
+                </div>
+                <div style="margin-top: 20px; margin-left: 20px;">
+                    <a style="font-size: 10px; color: #6c6c6c;">本商品最终解释权归lezzy所有</a>
+                </div>
+            </div>
+            <div style="float:left;width: 150px;height: 400px;">
+                <div style="font-size: 25px; margin-top: 50px;margin-left: 30px;">
+                    <img src="img/sys/lezzy.jpg" alt=""
+                         style="width: 80px; height: 80px; display: flex; border-radius: 50%; align-items: center;justify-content: center;overflow: hidden;">
+                    <div style="font-size: 20px;">
+                        <a href="">掌柜承诺:</a><br>
+                        本商城全场包邮，且如果非人为损坏且不影响二次销售的商品，均支持7天无理由退换货
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="item_info" style="height: 1000px;">
+            <div class="layui-tab layui-tab-card">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">商品详情</li>
+                    <li>累计评论</li>
+                </ul>
+                <div class="layui-tab-content" style="width: 950px;padding: 0;">
+                    <div class="layui-tab-item layui-show" id="itemInfo">
+                    </div>
+                    <div class="layui-tab-item">
+                        <div>
+                            <div style="float: left; font-size: 19px;margin-left: 20px;margin-top: 20px; width: 200px;">
+                                <a >lizhenyu:</a>
+                                <div id="start1"></div>
+                                <br>
+                                <a style="font-size: 15px;">2020-05-05 14:30:23</a>
+                            </div>
+                            <div style="float: left; font-size: 17px;margin-left: 20px;margin-top: 30px; width: 690px;">
+                                <a>很好玩很好玩很好玩很好玩很好玩很好玩很好玩很好玩很好玩很好玩</a>
+                            </div>
+                            <hr>
+                        </div>
+                        <div>
+                            <div style="float: left; font-size: 19px;margin-left: 20px;margin-top: 20px; width: 200px;">
+                                <a >lizhenyu:</a>
+                                <div id="start2"></div>
+                                <br>
+                                <a style="font-size: 15px;">2020-05-05 14:30:23</a>
+                            </div>
+                            <div style="float: left; font-size: 17px;margin-left: 20px;margin-top: 30px; width: 690px;">
+                                <a>很好玩很好玩很好玩很好玩很好玩很好玩很好玩很好玩很好玩很好玩</a>
+                            </div>
+                            <hr>
+                        </div>
+                        <div>
+                            <div style="float: left; font-size: 19px;margin-left: 20px;margin-top: 20px; width: 200px;">
+                                <a >lizhenyu:</a>
+                                <div id="start3"></div>
+                                <br>
+                                <a style="font-size: 15px;">2020-05-05 14:30:23</a>
+                            </div>
+                            <div style="float: left; font-size: 17px;margin-left: 20px;margin-top: 30px; width: 690px;">
+                                <a>很好玩很好玩很好玩很好玩很好玩很好玩很好玩很好玩很好玩很好玩</a>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+<script src="js/jquery-3.4.1.min.js"></script>
+<script src="layui/layui.all.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var id='[[${id}]]';
+        getLoginUser();
+        //console.log(id);
+        var item=getItemInfo(id);
+        layui.use('element', function () {
+            var element = layui.element;
+        });
+        layui.use(['rate'], function () {
+            var rate = layui.rate;
+            var arr=[1,2,3]
+            for(k=0;k<arr.length;k++){
+                rate.render({
+                    elem: "#start"+arr[k]
+                    , value: arr[k] //初始值
+                    , half: true //开启半星
+                    , readonly: true//只读
+                })
+            }
+
+        })
+        $("#add").click(function () {
+            var i = $("#num").val();
+            i++;
+            $("#num").val(i)
+        });
+
+        $("#del").click(function () {
+            var i = $("#num").val();
+            i--;
+            if (i < 1) {
+                return false;
+            }
+            $("#num").val(i)
+        });
+
+        $("#sure").click(function () {
+            console.log(userid);
+            $.ajax({
+                type: "post",
+                url: "car/saveCar",
+                async: false,
+                data: {
+                    userId:$("#userid").val(),
+                    itemId:id,
+                    itemPrice:item.itemPrice,
+                    itemNum:$("#num").val(),
+                },
+                success:function (res) {
+                    alert(res.msg)
+                }
+            })
+        })
+    })
+
+    function getLoginUser() {
+        $.get("user/getLoginUser",function (res) {
+            //console.log(res.data.id)
+            uid=res.data.id;
+            $(".username").html(res.data.username);
+            $("#userid").val(res.data.id);
+        });
+    }
+
+    function getItemInfo(id) {
+        var obj="";
+        $.ajax({
+            type:"get",
+            url:"item/getItemByid",
+            async:false,
+            data:{
+                id:id
+            },
+            success:function (res) {
+                if(res.code==0){
+                    doHandlerItemInfo(res.data)
+                    obj=res.data;
+                }else {
+                    alert(res.msg)
+                }
+            }
+        });
+        return obj;
+    }
+
+    function doHandlerItemInfo(data) {
+        console.log(data)
+        $("#itemLogo").html("<img src='"+data.itemLogo+"' alt='' width='400px'>");
+        $("#itemName").html(data.itemName+" 中文 现货")
+        $("#itemPrice").html("¥"+data.itemPrice);
+        $("#itemSales").html(data.itemSales);
+        $("#itemStock").html("(库存 "+data.itemStock+"件)");
+        $("#itemInfo").html(data.itemInfo);
+    }
+</script>
+</html>
