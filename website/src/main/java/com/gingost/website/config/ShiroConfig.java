@@ -38,6 +38,7 @@ public class ShiroConfig {
 		map.put("/css/**", "anon");
 		map.put("/js/**", "anon");
 		map.put("/img/**", "anon");
+		map.put("/layui/**", "anon");
 		map.put("/user/saveUser","anon");
 		map.put("/user/getLoginUser","anon");
 		map.put("/user/findOneUser","anon");
