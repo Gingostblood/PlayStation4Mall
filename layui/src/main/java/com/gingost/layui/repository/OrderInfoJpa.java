@@ -4,9 +4,13 @@ import com.gingost.layui.domain.website.OrderInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.util.List;
+
 /**
  * @Author:lezzy
  * @Date:2020/4/18 19:51
  */
 public interface OrderInfoJpa extends JpaRepository<OrderInfo,Integer>, JpaSpecificationExecutor<OrderInfo> {
+
+    List<OrderInfo> findOrderInfosByOrderId(Integer orderid);
 }

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>我的订单</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+
+<body>
+<div class="show">
+    <input type="hidden" id="userid">
+    <div class="head">
+        <a>欢迎你,</a>
+        <a class="username" href=""></a>&nbsp;|
+        <a href="">注销</a>
+
+        <div class="part2">
+
+        </div>
+        <a href="" class="index">
+            <i class="layui-icon">&#xe68e;</i>
+            首页</a>&nbsp;&nbsp;
+        <a href="" class="index">
+            <i class="layui-icon">&#xe770;</i>
+            个人中心</a>&nbsp;&nbsp;
+        <a href="" class="index">
+            <i class="layui-icon">&#xe657;</i>
+            购物车</a>&nbsp;&nbsp;
+        <a href="">
+            <i class="layui-icon">&#xe626;</i>
+            在线客服</a>&nbsp;&nbsp;
+        <a href="">
+            <i class="layui-icon">&#xe7ae;</i>
+            关于我</a>&nbsp;&nbsp;
+    </div>
+
+    <div class="main" style=" height: 1000px;">
+        <hr>
+        <form class="layui-form layui-form-pane">
+            <div class="layui-form-item">
+                <label class="layui-form-label">收货人</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="title" required lay-verify="required" placeholder="请输入收货人姓名"
+                           autocomplete="off" class="layui-input" id="accepter">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">联系电话</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="title" required lay-verify="required" placeholder="请输入联系电话"
+                           autocomplete="off" class="layui-input" id="phone">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮政编码</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="title" required lay-verify="required" placeholder="请输入邮政编码"
+                           autocomplete="off" class="layui-input" id="postcode">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">选择地址</label>
+<!--                -->
+                <div class="layui-input-inline">
+                    <input type="text" name="title" required lay-verify="required" placeholder="请输入地址"
+                           autocomplete="off" class="layui-input" id="province">省
+                </div>
+                <div class="layui-input-inline">
+                    <input type="text" name="title" required lay-verify="required" placeholder="请输入地址"
+                           autocomplete="off" class="layui-input" id="county">市
+                </div>
+                <div class="layui-input-inline">
+                    <input type="text" name="title" required lay-verify="required" placeholder="请输入地址"
+                           autocomplete="off" class="layui-input" id="city">县/（区）
+                </div>
+                <div class="layui-input-inline">
+                    <input type="text" name="title" required lay-verify="required" placeholder="请输入联系电话"
+                           autocomplete="off" class="layui-input" id="street">街道
+                </div>
+            </div>
+        </form>
+        <hr>
+        <table class="layui-hide" id="test" lay-filter="test"></table>
+        <a style="margin-left: 350px;font-size: 18px;">合计：</a>
+        <a id="price" style="font-size: 18px;">1523</a>
+        <hr>
+        <button type="button" id="pay" style="margin-left: 350px;" class="layui-btn layui-btn-normal layui-btn-radius">确定支付
+        </button>
+    </div>
+</div>
+</body>
+
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+<script th:src="@{/layui/layui.all.js}"></script>
+<script type="text/javascript">
+    var ids = '[[${ids}]]'
+    $(function () {
+        getLoginUser();
+        getTable(ids)
+        getPrice(ids);
+        //getAddress();
+        $("#pay").click(function () {
+            $.ajax({
+                url:'payFortheCar',
+                type:'put',
+                async:false,
+                data: {
+                    ids:ids,
+                    province:$("#province").val(),
+                    county:$("#county").val(),
+                    city:$("#city").val(),
+                    street:$("#street").val(),
+                    postcode:$("#postcode").val(),
+                    accepter:$("#accepter").val(),
+                    phone:$("#phone").val(),
+                },
+                success:function (res) {
+                    alert(res.msg)
+                }
+            })
+        })
+    })
+    console.log(ids);
+
+    function getLoginUser() {
+        $.ajax({
+            type: 'get',
+            url: 'getLoginUser',
+            async: false,
+            success: function (res) {
+                $(".username").html(res.data.username);
+                $("#userid").val(res.data.id);
+            }
+        })
+    }
+
+    function getTable(ids) {
+        layui.use('table', function () {
+            var table = layui.table;
+
+            //温馨提示：默认由前端自动合计当前行数据。从 layui 2.5.6 开始： 若接口直接返回了合计行数据，则优先读取接口合计行数据。
+            //详见：https://www.layui.com/doc/modules/table.html#totalRow
+            table.render({
+                elem: '#test'
+                , url: 'findCarsByCarId'
+                , title: '用户数据表'
+                , response: {
+                    dataName: 'list'//修改layui封装的参数名limit->size
+                }
+                , where: {
+                    ids: ids
+                }
+                , cols: [
+                    [
+                        {field: 'name', title: '名称', width: 400, fixed: 'left'}
+                        , {field: 'num', title: '数量', width: 395, fixed: 'right'}
+                    ]
+                ]
+                , page: false
+            });
+        });
+    }
+
+    function getPrice(ids) {
+        $.ajax({
+            type: 'get',
+            url: 'getPriceByCarId',
+            async: false,
+            data: {
+                ids: ids
+            },
+            success: function (res) {
+                $("#price").html(res);
+            }
+        })
+    }
+
+    // function getAddress() {
+    //     $.ajax({
+    //         type: "get",
+    //         async: false,
+    //         url:"getUserAddressByUserId",
+    //         data:{
+    //             id:$("#userid").val()
+    //         },
+    //         success:function (res) {
+    //             var str="";
+    //             for (i=0;i<res.data.length;i++){
+    //                 str+=" <input type='radio' name='address' title="+res.data[i].province+""+res.data[i].county+""+res.data[i].city+""+res.data[i].street+""+res.data[i].postcode+"><br>"
+    //             }
+    //             //$("#address").append(str)
+    //         }
+    //     })
+    // }
+
+</script>
+
+</html>

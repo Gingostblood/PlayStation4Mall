@@ -17,30 +17,35 @@ import org.springframework.web.servlet.ModelAndView;
 @AllArgsConstructor
 public class PageController {
     @GetMapping("index")
-    public String index(){
+    public String index() {
         return "index";
     }
 
     @GetMapping("getItemInfo")
-    public ModelAndView getItemInfo(String id){
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.addObject("id",Integer.parseInt(id));
+    public ModelAndView getItemInfo(String id) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("id", Integer.parseInt(id));
         modelAndView.setViewName("sys/item_info");
         return modelAndView;
     }
 
     @GetMapping("signin")
-    public String signin(){
+    public String signin() {
         return "signin";
     }
 
     @GetMapping("signup")
-    public String signup(){
+    public String signup() {
         return "signup";
     }
 
     @GetMapping("car")
-    public String car(){
-        return "sys/car";
+    public String car() {
+        return "sys/car_test";
     }
+
+//    @RequestMapping("order")
+//    public String order() {
+//        return "sys/order";
+//    }
 }

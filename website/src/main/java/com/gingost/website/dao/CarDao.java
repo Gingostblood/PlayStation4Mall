@@ -21,4 +21,11 @@ public interface CarDao {
 
     @Select("select * from car where user_id=#{userId}")
     List<Car> findCarsByUserId(Integer userId);
+
+    @Select("select id from car where user_id=#{userId}")
+    List<Integer> findCarIdsByUserId(Integer id);
+
+    List<Car> findCarsByCarId(List<Integer> ids);
+
+    void deleteCarsById(List<Integer> ids);
 }

@@ -1,6 +1,7 @@
 package com.gingost.layui.service.impl;
 
 import com.gingost.layui.common.ResponseEntity;
+import com.gingost.layui.domain.Item;
 import com.gingost.layui.domain.dto.QueryCriteria.OrderInfoQueryCriteria;
 import com.gingost.layui.domain.dto.QueryCriteria.OrderQueryCriteria;
 import com.gingost.layui.domain.dto.resp.OrderRespDto;
@@ -40,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderInfoJpa orderInfoJpa;
 
     @Override
-    @Cacheable(value = "order_unfinish")
+    //@Cacheable(value = "order_unfinish")
     public LayuiTableVo<Order> findAllByUnfinish(int page, int size) {
         page = page - 1;
         Pageable pageable = PageRequest.of(page, size);
@@ -71,17 +72,24 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    @Caching(evict = {
-            @CacheEvict(value = "order_unfinish", allEntries = true),
-            @CacheEvict(value = "order_finish", allEntries = true),
-            @CacheEvict(value = "order_error", allEntries = true),
-    })
+//    @Caching(evict = {
+//            @CacheEvict(value = "order_unfinish", allEntries = true),
+//            @CacheEvict(value = "order_finish", allEntries = true),
+//            @CacheEvict(value = "order_error", allEntries = true),
+//    })
     public ResponseEntity changeOrderType(Integer id, String msg) {
         ResponseEntity responseEntity = new ResponseEntity();
         Order order = orderJpa.findById(id).orElseGet(Order::new);
         if (msg.equals("edit")) {
             order.setTypes(1);
             orderJpa.save(order);
+            List<OrderInfo> orderInfoList = orderInfoJpa.findOrderInfosByOrderId(order.getId());
+            for (OrderInfo orderInfo:orderInfoList){
+                Item item = itemJpa.findById(orderInfo.getItemId()).orElseGet(Item::new);
+                item.setItemSales(orderInfo.getNum());
+                item.setItemStock(item.getItemStock()-orderInfo.getNum());
+                itemJpa.save(item);
+            }
             responseEntity.setMsg("该订单发货成功!!!");
         } else if (msg.equals("close")) {
             order.setTypes(2);
@@ -92,7 +100,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Cacheable(value = "order_finish")
+    //@Cacheable(value = "order_finish")
     public LayuiTableVo findFinish(int page, int size) {
         page = page - 1;
         Pageable pageable = PageRequest.of(page, size);
@@ -106,7 +114,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Cacheable(value = "order_error")
+    //@Cacheable(value = "order_error")
     public LayuiTableVo findError(int page, int size) {
         page = page - 1;
         Pageable pageable = PageRequest.of(page, size);

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gingost.website.dao.OrdersDao">
+
+    <insert id="saveOrder" useGeneratedKeys="true"
+            keyProperty="id" keyColumn="id" parameterType="com.gingost.website.domain.Orders">
+		insert into orders values (null,now(),#{statu},#{types},#{uuid},#{userId},#{address},#{accepter},#{phone})
+	</insert>
+</mapper>
