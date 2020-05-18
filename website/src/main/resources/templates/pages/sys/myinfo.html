@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="layui/layui.all.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+<div class="show">
+    <input type="hidden" id="userid">
+    <div class="head">
+        <a>欢迎你,</a>
+        <a class="username" href=""></a>&nbsp;|
+        <a href="">注销</a>
+
+        <div class="part2">
+
+        </div>
+        <a href="" class="index">
+            <i class="layui-icon">&#xe68e;</i>
+            首页</a>&nbsp;&nbsp;
+        <a href="" class="index">
+            <i class="layui-icon">&#xe770;</i>
+            个人中心</a>&nbsp;&nbsp;
+        <a href="" class="index">
+            <i class="layui-icon">&#xe657;</i>
+            购物车</a>&nbsp;&nbsp;
+        <a href="">
+            <i class="layui-icon">&#xe626;</i>
+            在线客服</a>&nbsp;&nbsp;
+        <a href="">
+            <i class="layui-icon">&#xe7ae;</i>
+            关于我</a>&nbsp;&nbsp;
+    </div>
+    <div class="main">
+        <div style="height: 400px; background-color: red;margin-top: 20px;">
+
+        </div>
+        <div class="layui-tab layui-tab-card" style="margin-top: 20px; background-color: #d2d2d2;">
+            <ul class="layui-tab-title">
+                <li class="layui-this">个人资料</li>
+                <li>我的订单</li>
+                <li>历史记录</li>
+                <li>修改密码</li>
+                <li>订单管理</li>
+            </ul>
+            <div class="layui-tab-content" style="height: 1000px;">
+                <div class="layui-tab-item layui-show">
+                    <form class="layui-form layui-form-pane">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">用户名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="uname" required lay-verify="required" autocomplete="off"
+                                       class="layui-input" readonly>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">电话号码</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="phone" required lay-verify="required" autocomplete="off"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">邮箱</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="email" required lay-verify="required" autocomplete="off"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">最后更新</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="updateTime" required lay-verify="required"
+                                       autocomplete="off" class="layui-input" readonly>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- <hr class="layui-bg-red"> -->
+                    <button type="button" class="layui-btn layui-btn-radius layui-btn-normal">确认修改</button>
+                </div>
+                <div class="layui-tab-item" id="order">
+
+                    <!--                    <div class="layui-card">-->
+                    <!--                        <div class="layui-card-header">卡片面板</div>-->
+                    <!--                        <div class="layui-card-body">-->
+                    <!--                            卡片式面板面板通常用于非白色背景色的主体内<br>-->
+                    <!--                            从而映衬出边框投影-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                </div>
+                <div class="layui-tab-item">内容3</div>
+                <div class="layui-tab-item">内容4</div>
+                <div class="layui-tab-item">内容5</div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        layui.use('element', function () {
+            var element = layui.element;
+        });
+
+        getLoginUser();
+        getOrderInfo()
+    })
+
+
+
+    function getOrderInfo() {
+        $.ajax({
+            type: 'get',
+            url: 'user/getUserOrders',
+            success: function (res) {
+                var str = "";
+                console.log(res)
+                for (var i = 0; i < res.data.length; i++) {
+                    str += "<div class='layui-card'>" +
+                        " <div class='layui-card-header'>订单编号:" + res.data[i].uuid +
+                        "<button class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger' style='margin-left:600px;'>" + res.data[i].btnName + "</button>" +
+                        "</div>" +
+                        "<div class='layui-card-body'>" +
+                        "<table class='layui-hide' id='test"+res.data[i].id+"' lay-filter='test'></table>"+
+                        "</div></div>"
+                }
+                $("#order").html(str);
+                for (var i = 0; i < res.data.length; i++) {
+                    fktable(res.data[i].id)
+                }
+            }
+        })
+    }
+    function getLoginUser() {
+        $.ajax({
+            type: 'get',
+            url: 'user/getLoginUser',
+            async: false,
+            success: function (res) {
+                $(".username").html(res.data.username);
+                $("#userid").val(res.data.id);
+                $("#uname").val(res.data.username);
+                $("#phone").val(res.data.phone);
+                $("#email").val(res.data.email);
+                $("#updateTime").val(res.data.updateTime);
+            }
+        })
+    }
+
+    function fktable(id) {
+        layui.use('table', function () {
+            var table = layui.table;
+            table.render({
+                elem: '#test'+id
+                , url: 'user/getOrderInfoByOrderId'
+                ,response: {
+                    dataName: 'list'//修改layui封装的参数名limit->size
+                }
+                ,where:{
+                    orderId:id
+                }
+                , title: '用户数据表'
+                , cols: [
+                    [
+                        { field: 'name', title: '名称', width: 447, fixed: 'left' }
+                        , { field: 'num', title: '数量', width: 447, fixed: 'right' }
+                    ]
+                ]
+                , page: false
+            });
+        });
+    }
+</script>
+</html>

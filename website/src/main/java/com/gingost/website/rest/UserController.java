@@ -3,6 +3,8 @@ package com.gingost.website.rest;
 import com.gingost.website.common.ResponseEntity;
 import com.gingost.website.domain.TestUser;
 import com.gingost.website.domain.WebUser;
+import com.gingost.website.domain.vo.LayuiTableVo;
+import com.gingost.website.domain.vo.OrderVo;
 import com.gingost.website.service.UserService;
 import lombok.AllArgsConstructor;
 import org.apache.shiro.SecurityUtils;
@@ -48,5 +50,15 @@ public class UserController {
     public ResponseEntity isExit(String key,String value) {
         userService.isExit(key, value);
         return new ResponseEntity("彩蛋，如果你看到了这条消息，请务必联系我");
+    }
+
+    @GetMapping("getUserOrders")
+    private ResponseEntity getOrderInfo(){
+        return new ResponseEntity(userService.getOrderInfo());
+    }
+
+    @GetMapping("getOrderInfoByOrderId")
+    public LayuiTableVo<OrderVo> getOrderInfoByOrderId(Integer orderId){
+        return userService.getOrderInfoByOrderId(orderId);
     }
 }

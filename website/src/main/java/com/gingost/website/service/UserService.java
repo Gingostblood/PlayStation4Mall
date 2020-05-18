@@ -1,6 +1,11 @@
 package com.gingost.website.service;
 
 import com.gingost.website.domain.WebUser;
+import com.gingost.website.domain.vo.LayuiTableVo;
+import com.gingost.website.domain.vo.MyOrderInfoVo;
+import com.gingost.website.domain.vo.OrderVo;
+
+import java.util.List;
 
 /**
  * @author Lezzy
@@ -16,4 +21,8 @@ public interface UserService {
     void isExit(String key, String value);
 
     WebUser findUserById(Integer id);
+
+    List<MyOrderInfoVo> getOrderInfo();
+
+    LayuiTableVo<OrderVo> getOrderInfoByOrderId(Integer orderId);
 }

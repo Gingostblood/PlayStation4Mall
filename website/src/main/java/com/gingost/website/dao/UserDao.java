@@ -1,11 +1,15 @@
 package com.gingost.website.dao;
 
+import com.gingost.website.domain.OrderInfo;
+import com.gingost.website.domain.Orders;
 import com.gingost.website.domain.TestUser;
 import com.gingost.website.domain.WebUser;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * @author Lezzy
@@ -28,4 +32,9 @@ public interface UserDao {
     @Select("select * from web_user where id=#{id}")
     public WebUser findUserById(Integer id);
 
+    @Select("select * from orders where user_id =#{userid}")
+    List<Orders> finOrderByUserId(Integer userid);
+
+    @Select("select * from order_info where order_id=#{orderId}")
+    List<OrderInfo> findOrderInfoByOrderId(Integer orderId);
 }

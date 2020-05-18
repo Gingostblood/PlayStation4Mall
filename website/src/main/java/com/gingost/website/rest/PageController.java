@@ -44,6 +44,11 @@ public class PageController {
         return "sys/car_test";
     }
 
+    @GetMapping("myinfo")
+    public String myinfo() {
+        return "sys/myinfo";
+    }
+
 //    @RequestMapping("order")
 //    public String order() {
 //        return "sys/order";
