@@ -65,23 +65,24 @@
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">选择地址</label>
-<!--                -->
-                <div class="layui-input-inline">
-                    <input type="text" name="title" required lay-verify="required" placeholder="请输入地址"
-                           autocomplete="off" class="layui-input" id="province">省
-                </div>
-                <div class="layui-input-inline">
-                    <input type="text" name="title" required lay-verify="required" placeholder="请输入地址"
-                           autocomplete="off" class="layui-input" id="county">市
-                </div>
-                <div class="layui-input-inline">
-                    <input type="text" name="title" required lay-verify="required" placeholder="请输入地址"
-                           autocomplete="off" class="layui-input" id="city">县/（区）
-                </div>
-                <div class="layui-input-inline">
-                    <input type="text" name="title" required lay-verify="required" placeholder="请输入联系电话"
-                           autocomplete="off" class="layui-input" id="street">街道
-                </div>
+                <div id="address"></div>
+                <!--                -->
+                <!--                <div class="layui-input-inline">-->
+                <!--                    <input type="text" name="title" required lay-verify="required" placeholder="请输入地址"-->
+                <!--                           autocomplete="off" class="layui-input" id="province">省-->
+                <!--                </div>-->
+                <!--                <div class="layui-input-inline">-->
+                <!--                    <input type="text" name="title" required lay-verify="required" placeholder="请输入地址"-->
+                <!--                           autocomplete="off" class="layui-input" id="county">市-->
+                <!--                </div>-->
+                <!--                <div class="layui-input-inline">-->
+                <!--                    <input type="text" name="title" required lay-verify="required" placeholder="请输入地址"-->
+                <!--                           autocomplete="off" class="layui-input" id="city">县/（区）-->
+                <!--                </div>-->
+                <!--                <div class="layui-input-inline">-->
+                <!--                    <input type="text" name="title" required lay-verify="required" placeholder="请输入联系电话"-->
+                <!--                           autocomplete="off" class="layui-input" id="street">街道-->
+                <!--                </div>-->
             </div>
         </form>
         <hr>
@@ -89,7 +90,8 @@
         <a style="margin-left: 350px;font-size: 18px;">合计：</a>
         <a id="price" style="font-size: 18px;">1523</a>
         <hr>
-        <button type="button" id="pay" style="margin-left: 350px;" class="layui-btn layui-btn-normal layui-btn-radius">确定支付
+        <button type="button" id="pay" style="margin-left: 350px;" class="layui-btn layui-btn-normal layui-btn-radius">
+            确定支付
         </button>
     </div>
 </div>
@@ -101,26 +103,27 @@
 <script type="text/javascript">
     var ids = '[[${ids}]]'
     $(function () {
+
         getLoginUser();
         getTable(ids)
         getPrice(ids);
-        //getAddress();
+        getAddress();
         $("#pay").click(function () {
             $.ajax({
-                url:'payFortheCar',
-                type:'put',
-                async:false,
+                url: 'payFortheCar',
+                type: 'put',
+                async: false,
                 data: {
-                    ids:ids,
-                    province:$("#province").val(),
-                    county:$("#county").val(),
-                    city:$("#city").val(),
-                    street:$("#street").val(),
-                    postcode:$("#postcode").val(),
-                    accepter:$("#accepter").val(),
-                    phone:$("#phone").val(),
+                    ids: ids,
+                    province: $("#province").val(),
+                    county: $("#county").val(),
+                    city: $("#city").val(),
+                    street: $("#street").val(),
+                    postcode: $("#postcode").val(),
+                    accepter: $("#accepter").val(),
+                    phone: $("#phone").val(),
                 },
-                success:function (res) {
+                success: function (res) {
                     alert(res.msg)
                 }
             })
@@ -181,23 +184,27 @@
         })
     }
 
-    // function getAddress() {
-    //     $.ajax({
-    //         type: "get",
-    //         async: false,
-    //         url:"getUserAddressByUserId",
-    //         data:{
-    //             id:$("#userid").val()
-    //         },
-    //         success:function (res) {
-    //             var str="";
-    //             for (i=0;i<res.data.length;i++){
-    //                 str+=" <input type='radio' name='address' title="+res.data[i].province+""+res.data[i].county+""+res.data[i].city+""+res.data[i].street+""+res.data[i].postcode+"><br>"
-    //             }
-    //             //$("#address").append(str)
-    //         }
-    //     })
-    // }
+    function getAddress() {
+        $.ajax({
+            type: "get",
+            async: false,
+            url: "getUserAddressByUserId",
+            data: {
+                id: $("#userid").val()
+            },
+            success: function (res) {
+                var str = "";
+                for (i = 0; i < res.data.length; i++) {
+                    str += " <input type='radio' name='address' title=" + res.data[i].province + "" + res.data[i].county + "" + res.data[i].city + "" + res.data[i].street + "" + res.data[i].postcode + "><br>"
+                }
+                $("#address").html(str)
+                layui.use('form', function () {
+                    var form = layui.form;
+                    form.render();
+                });
+            }
+        })
+    }
 
 </script>
 
