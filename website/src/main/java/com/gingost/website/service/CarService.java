@@ -32,5 +32,5 @@ public interface CarService {
 
     WebUser getLoginUser();
 
-    void payFortheCar(List<String> ids, Address address,String accepter,String phone);
+    void payFortheCar(List<String> ids, Integer addressId,String accepter,String phone);
 }

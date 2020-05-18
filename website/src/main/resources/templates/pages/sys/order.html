@@ -115,16 +115,13 @@
                 async: false,
                 data: {
                     ids: ids,
-                    province: $("#province").val(),
-                    county: $("#county").val(),
-                    city: $("#city").val(),
-                    street: $("#street").val(),
-                    postcode: $("#postcode").val(),
+                    addressId:$("input:radio:checked").val(),
                     accepter: $("#accepter").val(),
                     phone: $("#phone").val(),
                 },
                 success: function (res) {
-                    alert(res.msg)
+                    alert(res.msg);
+                    location.href="index";
                 }
             })
         })
@@ -195,7 +192,7 @@
             success: function (res) {
                 var str = "";
                 for (i = 0; i < res.data.length; i++) {
-                    str += " <input type='radio' name='address' title=" + res.data[i].province + "" + res.data[i].county + "" + res.data[i].city + "" + res.data[i].street + "" + res.data[i].postcode + "><br>"
+                    str += " <input type='radio' name='address' value='"+res.data[i].id+"' title=" + res.data[i].province + "" + res.data[i].county + "" + res.data[i].city + "" + res.data[i].street + "" + res.data[i].postcode + "><br>"
                 }
                 $("#address").html(str)
                 layui.use('form', function () {

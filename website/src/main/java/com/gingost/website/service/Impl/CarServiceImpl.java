@@ -110,7 +110,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void payFortheCar(List<String> ids, Address address,String accepter,String phone) {
+    public void payFortheCar(List<String> ids, Integer addressId,String accepter,String phone) {
         List<Car> carList = carDao.findCarsByCarId(doHnadlerListFormat(ids));
         WebUser user = userDao.findUserById(ShiroUtil.getLoginUser().getId());
         double price = 0;
@@ -120,6 +120,7 @@ public class CarServiceImpl implements CarService {
         //生成订单
         Orders orders=new Orders();
         orders.setAccepter(accepter);
+        Address address=addressDao.getUserAddressById(addressId);
         orders.setAddress(address.getProvince()+"省"+address.getCounty()+"市"+address.getCity()+"县"+address.getStreet()+"街道"+address.getPostcode());
         orders.setPhone(Long.parseLong(phone));
         orders.setUuid(String.valueOf(System.currentTimeMillis()));
