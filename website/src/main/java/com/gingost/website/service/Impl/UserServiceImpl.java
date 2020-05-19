@@ -2,6 +2,7 @@ package com.gingost.website.service.Impl;
 
 import com.gingost.website.common.ShiroUtil;
 import com.gingost.website.dao.ItemDao;
+import com.gingost.website.dao.OrdersDao;
 import com.gingost.website.dao.UserDao;
 import com.gingost.website.domain.OrderInfo;
 import com.gingost.website.domain.Orders;
@@ -29,6 +30,7 @@ public class UserServiceImpl implements UserService {
 
     private UserDao userDao;
     private ItemDao itemDao;
+    private OrdersDao ordersDao;
 
     @Override
     @Transactional
@@ -135,6 +137,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int changePwd(String oldpwd, String newpwd) {
         WebUser user = userDao.findUserById(ShiroUtil.getLoginUser().getId());
         String hashPwd = new SimpleHash("MD5", oldpwd, user.getSalt(), 1).toHex();
@@ -148,5 +151,15 @@ public class UserServiceImpl implements UserService {
         }else {
             throw new RuntimeException("原密码错误");
         }
+    }
+
+    @Override
+    public int changeOrderType(String type) {
+        if (type.equals("close")){
+            ordersDao.changeOrderType(2);
+        }else if(type.equals("sure")){
+            ordersDao.changeOrderType(3);
+        }
+        return 0;
     }
 }

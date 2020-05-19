@@ -79,4 +79,9 @@ public class UserController {
     public ResponseEntity changePwd(String oldpwd,String newpwd){
         return new ResponseEntity(userService.changePwd(oldpwd,newpwd),"修改密码成功，下次登录时将会生效");
     }
+
+    @PutMapping("changeOrderType")
+    public ResponseEntity changeOrderType(String type){
+        return new ResponseEntity(userService.changeOrderType(type),"操作成功");
+    }
 }

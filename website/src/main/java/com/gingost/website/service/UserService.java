@@ -31,4 +31,6 @@ public interface UserService {
     Integer getUserOrdersCount();
 
     int changePwd(String oldpwd, String newpwd);
+
+    int changeOrderType(String type);
 }

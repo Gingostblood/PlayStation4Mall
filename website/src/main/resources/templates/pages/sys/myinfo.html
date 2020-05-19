@@ -199,7 +199,7 @@
                                     for (var i = 0; i < res.data.length; i++) {
                                         str += "<div class='layui-card'>" +
                                             " <div class='layui-card-header'>订单编号:" + res.data[i].uuid +
-                                            "<button class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger' style='margin-left:600px;'>" + res.data[i].btnName + "</button>" +
+                                            "<button class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger' style='margin-left:600px;' onclick='doHnadlerOrderBtn(this)'>" + res.data[i].btnName + "</button>" +
                                             "</div>" +
                                             "<div class='layui-card-body'>" +
                                             "<table class='layui-hide' id='test" + res.data[i].id + "' lay-filter='test'></table>" +
@@ -258,6 +258,31 @@
                 , page: false
             });
         });
+    }
+
+    function doHnadlerOrderBtn(obj) {
+        var msg=obj.prop("value");
+        var type="";
+        if(msg=="取消订单"){
+            type="close"
+        }else if (msg=="确认收货"){
+            type="sure"
+        }
+        changeOrderType(type);
+    }
+
+    function changeOrderType(type) {
+        $.ajax({
+            type:"put",
+            async:false,
+            url:"user/changeOrderType",
+            data:{
+                type:type,
+            },
+            success:function (res) {
+                alert(res.msg);
+            }
+        })
     }
 </script>
 </html>
