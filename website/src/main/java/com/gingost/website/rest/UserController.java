@@ -1,6 +1,7 @@
 package com.gingost.website.rest;
 
 import com.gingost.website.common.ResponseEntity;
+import com.gingost.website.domain.Evaluate;
 import com.gingost.website.domain.WebUser;
 import com.gingost.website.domain.vo.LayuiTableVo;
 import com.gingost.website.domain.vo.OrderVo;
@@ -81,7 +82,27 @@ public class UserController {
     }
 
     @PutMapping("changeOrderType")
-    public ResponseEntity changeOrderType(String type){
-        return new ResponseEntity(userService.changeOrderType(type),"操作成功");
+    public ResponseEntity changeOrderType(String type,Integer id){
+        return new ResponseEntity(userService.changeOrderType(type,id),"操作成功");
+    }
+
+    @GetMapping("getHistoryUserOrdersCount")
+    public Integer getHistoryUserOrdersCount(){
+        return userService.getHistoryUserOrdersCount();
+    }
+
+    @GetMapping("getHistoryUserOrders")
+    private ResponseEntity getHistoryUserOrders(Integer page,Integer size) {
+        return new ResponseEntity(userService.getHistoryUserOrders(page,size));
+    }
+
+    @GetMapping("findEvaluateList")
+    public ResponseEntity findEvaluateList(Integer orderid){
+        return new ResponseEntity(userService.findEvaluateList(orderid));
+    }
+
+    @PostMapping("goToEvaluate")
+    public ResponseEntity goToEvaluate(Evaluate evaluate){
+        return new ResponseEntity(userService.goToEvaluate(evaluate),"评论成功");
     }
 }

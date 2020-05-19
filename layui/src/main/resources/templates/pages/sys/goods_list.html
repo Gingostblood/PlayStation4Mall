@@ -102,13 +102,13 @@
                             alert(res.msg)
                         }
                     })
-                    getTable("/item/findAll");
+                    getTable("item/findAll");
                 } else {
                     alert("确定要将该商品上架吗？");
                     $.ajax({
                         type: "put",
                         async: false,
-                        url: "/item/changeStatu",
+                        url: "item/changeStatu",
                         data: {
                             id: id
                         },
@@ -125,7 +125,6 @@
                 var data = obj.data.id;
                 var event = obj.event;
                 if (event == 'detail') {
-                    //ajax事件，剩下的if省略
                     console.log(data);
                 } else if (event == 'del') {
                     alert("确定要删除该商品吗？");
@@ -140,7 +139,7 @@
                             alert(res.msg)
                         }
                     })
-                    getTable("/item/findAll");
+                    getTable("item/findAll");
                 }
             });
             table.on('toolbar(test)', function (obj) {
@@ -150,17 +149,6 @@
                 var res = table.checkStatus(obj.config.id).data;
                 console.log(res);
                 if (obj.event == 'add') {
-                    /*                var array=[];
-                                    if(res.length==0){
-                                        alert("请选中至少一行");
-                                        return false;
-                                    }else{
-                                        for (i=0;i<res.length;i++){
-                                            array.push(res[i].id);
-                                        }
-                                    }
-                                    //要么传递一个数组，要么传递一个toString后的字符串，都行
-                                    console.log(array.toString());*/
                     layui.use('layer', function () {
                         var layer = layui.layer;
                         layer.open({
@@ -197,11 +185,11 @@
                                 alert(res.msg);
                             }
                         });
-                        getTable("/item/findAll");
+                        getTable("item/findAll");
                     }
                 } else if (obj.event=='refresh') {
                     alert("你将会丢失当前进度，确定要刷新吗");
-                    getTable("/item/findAll");
+                    getTable("item/findAll");
                 }
             })
         });

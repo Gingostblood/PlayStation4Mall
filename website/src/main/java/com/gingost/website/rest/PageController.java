@@ -49,6 +49,14 @@ public class PageController {
         return "sys/myinfo";
     }
 
+    @GetMapping("evaluate")
+    public ModelAndView evaluate(Integer id){
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.addObject("id",id);
+        modelAndView.setViewName("sys/evaluate");
+        return modelAndView;
+    }
+
 //    @RequestMapping("order")
 //    public String order() {
 //        return "sys/order";

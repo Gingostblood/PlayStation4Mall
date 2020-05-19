@@ -4,6 +4,9 @@ package com.gingost.website.dao;
 import com.gingost.website.domain.OrderInfo;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * @author Lezzy

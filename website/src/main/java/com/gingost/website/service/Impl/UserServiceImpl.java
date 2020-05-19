@@ -1,9 +1,11 @@
 package com.gingost.website.service.Impl;
 
 import com.gingost.website.common.ShiroUtil;
+import com.gingost.website.dao.EvaluateDao;
 import com.gingost.website.dao.ItemDao;
 import com.gingost.website.dao.OrdersDao;
 import com.gingost.website.dao.UserDao;
+import com.gingost.website.domain.Evaluate;
 import com.gingost.website.domain.OrderInfo;
 import com.gingost.website.domain.Orders;
 import com.gingost.website.domain.WebUser;
@@ -13,6 +15,7 @@ import com.gingost.website.domain.vo.OrderVo;
 import com.gingost.website.service.UserService;
 import com.gingost.website.utils.PageUtils;
 import lombok.AllArgsConstructor;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +34,7 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
     private ItemDao itemDao;
     private OrdersDao ordersDao;
+    private EvaluateDao evaluateDao;
 
     @Override
     @Transactional
@@ -80,7 +84,7 @@ public class UserServiceImpl implements UserService {
     public List<MyOrderInfoVo> getOrderInfo(Integer page, Integer size) {
         List<MyOrderInfoVo> list = new ArrayList<>();
         Integer userid = ShiroUtil.getLoginUser().getId();
-        List<Orders> ordersList = userDao.finOrderByUserId(userid);
+        List<Orders> ordersList = userDao.findOrderByUserId(userid);
         for (Orders orders : ordersList) {
             MyOrderInfoVo myOrderInfoVo = new MyOrderInfoVo();
             myOrderInfoVo.setId(orders.getId());
@@ -133,7 +137,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Integer getUserOrdersCount() {
-        return userDao.finOrderByUserId(ShiroUtil.getLoginUser().getId()).size();
+        return userDao.findOrderByUserId(ShiroUtil.getLoginUser().getId()).size();
     }
 
     @Override
@@ -154,11 +158,61 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int changeOrderType(String type) {
-        if (type.equals("close")){
-            ordersDao.changeOrderType(2);
-        }else if(type.equals("sure")){
-            ordersDao.changeOrderType(3);
+    @Transactional(rollbackFor = Exception.class)
+    public int changeOrderType(String type,Integer id) {
+        try {
+            if (type.equals("close")){
+                ordersDao.changeOrderTypeById(2,id);
+            }else if(type.equals("sure")){
+                ordersDao.changeOrderTypeById(3,id);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("操作失败");
+        }
+        return 0;
+    }
+
+    @Override
+    public Integer getHistoryUserOrdersCount() {
+        return userDao.findHistoryOrderByUserId(ShiroUtil.getLoginUser().getId()).size();
+    }
+
+    @Override
+    public List<MyOrderInfoVo> getHistoryUserOrders(Integer page, Integer size) {
+        List<MyOrderInfoVo> list = new ArrayList<>();
+        Integer userid = ShiroUtil.getLoginUser().getId();
+        List<Orders> ordersList = userDao.findHistoryOrderByUserId(userid);
+        for (Orders orders : ordersList) {
+            MyOrderInfoVo myOrderInfoVo = new MyOrderInfoVo();
+            myOrderInfoVo.setId(orders.getId());
+            myOrderInfoVo.setUuid(orders.getUuid());
+            list.add(myOrderInfoVo);
+        }
+        return PageUtils.toPage(page - 1, size, list);
+    }
+
+    @Override
+    public List<Map> findEvaluateList(Integer orderid) {
+        List<OrderInfo> orderInfoList = userDao.findOrderInfoByOrderId(orderid);
+        List<Map> list=new ArrayList<>();
+        for (OrderInfo orderInfo:orderInfoList){
+            Map<String,Object> map=new LinkedHashMap<>();
+            map.put("id",orderInfo.getItemId());
+            map.put("name",itemDao.getItemByid(orderInfo.getItemId()).getItemName());
+            list.add(map);
+        }
+        return list;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int goToEvaluate(Evaluate evaluate) {
+        int i=0;
+        try {
+            evaluate.setUsername(ShiroUtil.getLoginUser().getUsername());
+            evaluateDao.saveEvaluate(evaluate);
+        } catch (Exception e) {
+           throw new RuntimeException("服务器开了个小差");
         }
         return 0;
     }

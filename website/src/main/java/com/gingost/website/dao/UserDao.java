@@ -28,8 +28,11 @@ public interface UserDao {
     @Select("select * from web_user where id=#{id}")
     WebUser findUserById(Integer id);
 
-    @Select("select * from orders where user_id =#{userid} order by id desc")
-    List<Orders> finOrderByUserId(Integer userid);
+    @Select("select * from orders where user_id =#{userid} and types in(0,1) order by id desc")
+    List<Orders> findOrderByUserId(Integer userid);
+
+    @Select("select * from orders where user_id =#{userid} and types=3 order by id desc")
+    List<Orders> findHistoryOrderByUserId(Integer userid);
 
     @Select("select * from order_info where order_id=#{orderId}")
     List<OrderInfo> findOrderInfoByOrderId(Integer orderId);

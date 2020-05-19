@@ -44,8 +44,8 @@
         <div class="layui-tab layui-tab-card" style="margin-top: 20px; background-color: #d2d2d2;">
             <ul class="layui-tab-title">
                 <li class="layui-this">个人资料</li>
-                <li>我的订单</li>
-                <li>历史记录</li>
+                <li>未完成订单</li>
+                <li>已完成订单</li>
                 <li>修改密码</li>
                 <li>订单管理</li>
             </ul>
@@ -86,16 +86,19 @@
                 </div>
                 <div class="layui-tab-item">
                     <div id="order"></div>
-                    <div id="page" style="margin-left: auto"></div>
+                    <div id="page"></div>
                 </div>
-                <div class="layui-tab-item">内容3</div>
+                <div class="layui-tab-item">
+                    <div id="history"></div>
+                    <div id="historypage"></div>
+                </div>
                 <div class="layui-tab-item">
                     <form class="layui-form layui-form-pane">
                         <div class="layui-form-item">
                             <label class="layui-form-label">原密码</label>
                             <div class="layui-input-inline">
                                 <input type="password" id="oldpwd" required lay-verify="required" autocomplete="off"
-                                       class="layui-input" >
+                                       class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -109,11 +112,13 @@
                             <label class="layui-form-label">确认密码</label>
                             <div class="layui-input-inline">
                                 <input type="password" id="repwd" required lay-verify="required"
-                                       autocomplete="off" class="layui-input" >
+                                       autocomplete="off" class="layui-input">
                             </div>
                         </div>
+                        y
                     </form>
                     <button id="changePwd" type="button" class="layui-btn layui-btn-radius layui-btn-normal">确认修改
+                    </button>
                 </div>
                 <div class="layui-tab-item">内容5</div>
             </div>
@@ -130,6 +135,7 @@
 
         getLoginUser();
         getOrderInfo()
+        getHistoryOrderInfo();
 
         $("#changeUser").click(function () {
             $.ajax({
@@ -150,22 +156,31 @@
         });
 
         $("#changePwd").click(function () {
-            var oldpwd=$("#oldpwd").val();
-            var newpwd=$("#newpwd").val();
-            var repwd=$("#repwd").val();
-            if(newpwd!=repwd){
+            var oldpwd = $("#oldpwd").val();
+            var newpwd = $("#newpwd").val();
+            var repwd = $("#repwd").val();
+            if (oldpwd == "" || oldpwd.length == 0) {
+                alert("请输入原密码")
+            }
+            if (newpwd == "" || newpwd.length == 0) {
+                alert("请输入新密码")
+            }
+            if (repwd == "" || repwd.length == 0) {
+                alert("请输入确认密码")
+            }
+            if (newpwd != repwd) {
                 alert("新密码与确认密码匹配，请重新输入")
                 return false;
             }
             $.ajax({
-                type:"put",
-                url:"user/changePwd",
+                type: "put",
+                url: "user/changePwd",
                 async: false,
-                data:{
-                    oldpwd:oldpwd,
-                    newpwd:newpwd
+                data: {
+                    oldpwd: oldpwd,
+                    newpwd: newpwd
                 },
-                success:function (res) {
+                success: function (res) {
                     alert(res.msg)
                 }
             })
@@ -199,7 +214,7 @@
                                     for (var i = 0; i < res.data.length; i++) {
                                         str += "<div class='layui-card'>" +
                                             " <div class='layui-card-header'>订单编号:" + res.data[i].uuid +
-                                            "<button class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger' style='margin-left:600px;' onclick='doHnadlerOrderBtn(this)'>" + res.data[i].btnName + "</button>" +
+                                            "<button class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger' style='margin-left:600px;' onclick='doHnadlerOrderBtn(this)' id='" + res.data[i].id + "'>" + res.data[i].btnName + "</button>" +
                                             "</div>" +
                                             "<div class='layui-card-body'>" +
                                             "<table class='layui-hide' id='test" + res.data[i].id + "' lay-filter='test'></table>" +
@@ -261,28 +276,95 @@
     }
 
     function doHnadlerOrderBtn(obj) {
-        var msg=obj.prop("value");
-        var type="";
-        if(msg=="取消订单"){
-            type="close"
-        }else if (msg=="确认收货"){
-            type="sure"
+        var msg = $(obj).html();
+        var id = $(obj).prop("id");
+        var type = "";
+        if (msg == "取消订单") {
+            type = "close"
+        } else if (msg == "确认收货") {
+            type = "sure"
         }
-        changeOrderType(type);
+        changeOrderType(type, id);
     }
 
-    function changeOrderType(type) {
+    function changeOrderType(type, id) {
         $.ajax({
-            type:"put",
-            async:false,
-            url:"user/changeOrderType",
-            data:{
-                type:type,
+            type: "put",
+            async: false,
+            url: "user/changeOrderType",
+            data: {
+                id: id,
+                type: type,
             },
-            success:function (res) {
+            success: function (res) {
                 alert(res.msg);
             }
         })
+    }
+
+    function getHistoryOrderInfo() {
+        $.ajax({
+            type: 'get',
+            url: 'user/getHistoryUserOrdersCount',
+            success: function (res) {
+                layui.use('laypage', function () {
+                    var laypage = layui.laypage;
+                    laypage.render({
+                        elem: 'historypage' //注意，这里的 test1 是 ID，不用加 # 号
+                        , limit: 5
+                        , count: res //数据总数，从服务端得到
+                        , jump: function (obj, first) {
+                            $.ajax({
+                                type: 'get',
+                                url: 'user/getHistoryUserOrders',
+                                data: {
+                                    page: obj.curr,
+                                    size: 5,
+                                },
+                                success: function (res) {
+                                    var str = "";
+                                    console.log(res)
+
+                                    for (var i = 0; i < res.data.length; i++) {
+                                        str += "<div class='layui-card'>" +
+                                            " <div class='layui-card-header'>订单编号:" + res.data[i].uuid +
+                                            "<button class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger' style='margin-left:600px;' onclick='doHnadlerItemBtn(this)' id='" + res.data[i].id + "'>评价</button>" +
+                                            "</div>" +
+                                            "<div class='layui-card-body'>" +
+                                            "<table class='layui-hide' id='test" + res.data[i].id + "' lay-filter='test'></table>" +
+                                            "</div></div>"
+                                    }
+                                    $("#history").html(str);
+                                    for (var i = 0; i < res.data.length; i++) {
+                                        fktable(res.data[i].id)
+                                    }
+                                }
+                            })
+                        }
+                    });
+                });
+
+            }
+        })
+    }
+
+    function doHnadlerItemBtn(obj) {
+        var id = $(obj).prop("id");
+        layui.use('layer', function () {
+            var layer = layui.layer;
+            layer.open({
+                type: 2,
+                area: ['1200px', '800px'],
+                btn: '确定',
+                closeBtn: 2,
+                anim: 5,
+                yes: function (index, layero) {
+                    layer.close(index);
+                },
+                title: '商品评价',
+                content: 'evaluate?id=' + id
+            })
+        });
     }
 </script>
 </html>

@@ -2,6 +2,9 @@ package com.gingost.website.dao;
 
 import com.gingost.website.domain.Orders;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * @author Lezzy
@@ -13,6 +16,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface OrdersDao {
     void saveOrder(Orders orders);
 
-    
-    void changeOrderType(int i);
+    @Update("update orders set types =#{types} where id=#{id}")
+    void changeOrderTypeById(@Param("types") Integer types, @Param("id") Integer id );
 }

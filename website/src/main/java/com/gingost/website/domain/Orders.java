@@ -15,7 +15,7 @@ public class Orders {
     private Date creatTime;
     //0 未支付 1已支付
     private Integer statu=0;
-    //0 未发货 1已发货 2异常关闭
+    //0 未发货 1已发货 2异常关闭 3完成
     private Integer types=0;
     private String uuid;
     private Integer userId;

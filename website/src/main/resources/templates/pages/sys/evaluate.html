@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="layui/css/layui.css" media="all">
+</head>
+
+<body>
+<div style="width: 800px; height: 1000px; background-color: #6c6c6c; margin-left: auto; margin-right: auto;">
+    <div style="height: 50px;"></div>
+    <div id="info">
+
+    </div>
+</div>
+</body>
+<script src="js/jquery-3.4.1.min.js"></script>
+<script src="layui/layui.all.js"></script>
+<script>
+    var id='[[${id}]]'
+    $(function () {
+        getList(id);
+    })
+
+    function getList(id){
+        $.ajax({
+            type:'get',
+            url:'user/findEvaluateList',
+            async:false,
+            data:{
+                orderid:id
+            },
+            success:function (res) {
+                console.log(res);
+                debugger;
+                getCard(res);
+            }
+        })
+    }
+
+    function getCard(res){
+        var str="";
+        for (var i=0;i<res.data.length;i++){
+            str+="<div class='layui-card' style='width: 600px;height: 250px; margin-left: auto;margin-right: auto;'>" +
+                "<div class='layui-card-header'>"+res.data[i].name+"</div>" +
+                "<input type='hidden' id='h"+res.data[i].id+"'>" +
+                "<div class='layui-card-body'>" +
+                "<div id=s"+res.data[i].id+"></div>" +
+                "<textarea id='t"+res.data[i].id+"' required lay-verify='required' placeholder='请输入评价内容'" +
+                "class='layui-textarea'></textarea>" +
+                "</div>" +
+                "<button id='"+res.data[i].id+"' class='layui-btn layui-btn-radius layui-btn-normal' style='margin-left:270px' onclick='ok(this)'>提交</button>" +
+                "</div>"
+        }
+        $("#info").html(str);
+        for (var i=0;i<res.data.length;i++){
+            fkstar(res.data[i].id);
+        }
+
+    }
+    function fkstar(id){
+        layui.use(['rate'], function () {
+            var rate = layui.rate;
+            rate.render({
+                elem: '#s'+id
+                , value: 0 //初始值
+                , text: true //开启文本
+                , choose: function (value) {
+                    $("#h"+id).val(value)
+                }
+            });
+        })
+    }
+
+    function ok(obj) {
+        var itemid=$(obj).prop("id");
+        var t=$("#t"+itemid).val();
+        if(t==""||t.length==0){
+            alert("请输入评价内容");
+            return false;
+        }
+        $.ajax({
+            type: 'post',
+            url:'user/goToEvaluate',
+            data:{
+                itemId:itemid,
+                info:$("#t"+itemid).val(),
+                star:$("#h"+itemid).val(),
+            },
+            success:function (res) {
+                alert(res.msg);
+            }
+        })
+    }
+
+</script>
+
+</html>
