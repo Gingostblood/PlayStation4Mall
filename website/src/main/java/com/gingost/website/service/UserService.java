@@ -25,4 +25,6 @@ public interface UserService {
     List<MyOrderInfoVo> getOrderInfo();
 
     LayuiTableVo<OrderVo> getOrderInfoByOrderId(Integer orderId);
+
+    void changeUser(WebUser user);
 }

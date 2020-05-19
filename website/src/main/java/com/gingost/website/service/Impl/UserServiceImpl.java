@@ -15,10 +15,7 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Lezzy
@@ -46,26 +43,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public WebUser getLoginUser() {
         WebUser user = ShiroUtil.getLoginUser();
-       if(Objects.nonNull(user)) {
-           return user;
-       }else {
-           WebUser visitor=new WebUser();
-           visitor.setUsername("游客");
-           return visitor;
-       }
+        if (Objects.nonNull(user)) {
+            return userDao.findUserById(user.getId());
+        } else {
+            WebUser visitor = new WebUser();
+            visitor.setUsername("游客");
+            return visitor;
+        }
     }
 
     @Override
     public void isExit(String key, String value) {
-        int row=userDao.isExit(key, value);
-        if(row!=0){
-            if(key.equals("username")){
+        int row = userDao.isExit(key, value);
+        if (row != 0) {
+            if (key.equals("username")) {
                 throw new RuntimeException("用户名已存在");
             }
-            if(key.equals("phone")){
+            if (key.equals("phone")) {
                 throw new RuntimeException("电话号码已存在");
             }
-            if(key.equals("email")){
+            if (key.equals("email")) {
                 throw new RuntimeException("邮箱已存在");
             }
         }
@@ -78,17 +75,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<MyOrderInfoVo> getOrderInfo() {
-        List<MyOrderInfoVo> list=new ArrayList<>();
-        Integer userid=ShiroUtil.getLoginUser().getId();
-        List<Orders> ordersList=userDao.finOrderByUserId(userid);
-        for (Orders orders:ordersList){
-            MyOrderInfoVo myOrderInfoVo=new MyOrderInfoVo();
+        List<MyOrderInfoVo> list = new ArrayList<>();
+        Integer userid = ShiroUtil.getLoginUser().getId();
+        List<Orders> ordersList = userDao.finOrderByUserId(userid);
+        for (Orders orders : ordersList) {
+            MyOrderInfoVo myOrderInfoVo = new MyOrderInfoVo();
             myOrderInfoVo.setId(orders.getId());
             myOrderInfoVo.setUuid(orders.getUuid());
-            if (orders.getTypes()==0){
+            if (orders.getTypes() == 0) {
                 myOrderInfoVo.setBtnName("取消订单");
             }
-            if(orders.getTypes()==1){
+            if (orders.getTypes() == 1) {
                 myOrderInfoVo.setBtnName("确认收货");
             }
             list.add(myOrderInfoVo);
@@ -100,13 +97,34 @@ public class UserServiceImpl implements UserService {
     public LayuiTableVo<OrderVo> getOrderInfoByOrderId(Integer orderId) {
         List<OrderInfo> orderInfoList = userDao.findOrderInfoByOrderId(orderId);
 
-        List<OrderVo> list=new ArrayList<>();
-        for (OrderInfo orderInfo:orderInfoList){
-            OrderVo orderVo=new OrderVo();
+        List<OrderVo> list = new ArrayList<>();
+        for (OrderInfo orderInfo : orderInfoList) {
+            OrderVo orderVo = new OrderVo();
             orderVo.setName(itemDao.getItemByid(orderInfo.getItemId()).getItemName());
             orderVo.setNum(orderInfo.getNum());
             list.add(orderVo);
         }
-        return new LayuiTableVo<>(list.size(),list);
+        return new LayuiTableVo<>(list.size(), list);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void changeUser(WebUser user) {
+        int rowA = userDao.isHave("email", user.getEmail(), user.getId());
+        if (rowA > 0) {
+            throw new RuntimeException("该邮箱已被注册，请重新填写");
+        }
+        int rowB = userDao.isHave("phone", String.valueOf(user.getPhone()), user.getId());
+        if (rowB > 0) {
+            throw new RuntimeException("该电话已被注册，请重新填写");
+        }
+        WebUser userById = userDao.findUserById(user.getId());
+        userById.setEmail(user.getEmail());
+        userById.setPhone(user.getPhone());
+        userById.setUpdateTime(new Date());
+        int i = userDao.updateUser(userById);
+        if (i!=1){
+            throw new RuntimeException("发生了不可知错误，请重试");
+        }
     }
 }

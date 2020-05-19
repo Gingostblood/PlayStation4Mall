@@ -76,14 +76,16 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">最后更新</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="updateTime" required lay-verify="required"
+                                <input type="text" id="updateTime" required lay-verify="required"
                                        autocomplete="off" class="layui-input" readonly>
                             </div>
                         </div>
                     </form>
-                    <button type="button" class="layui-btn layui-btn-radius layui-btn-normal">确认修改</button>
+                    <button id="changeUser" type="button" class="layui-btn layui-btn-radius layui-btn-normal">确认修改</button>
                 </div>
-                <div class="layui-tab-item" id="order">
+                <div class="layui-tab-item">
+                    <div id="address"></div>
+                    <div id="page"></div>
                 </div>
                 <div class="layui-tab-item">内容3</div>
                 <div class="layui-tab-item">内容4</div>
@@ -102,6 +104,24 @@
 
         getLoginUser();
         getOrderInfo()
+
+        $("#changeUser").click(function () {
+            $.ajax({
+                type:"put",
+                url:"user/changeUser",
+                data:{
+                    id:$("#userid").val(),
+                    email:$("#email").val(),
+                    phone:$("#phone").val()
+                },
+                success:function (res) {
+                    alert(res.msg);
+                    if(res.code==0){
+                        getLoginUser()
+                    }
+                }
+            })
+        })
     })
 
 
@@ -113,6 +133,7 @@
             success: function (res) {
                 var str = "";
                 console.log(res)
+
                 for (var i = 0; i < res.data.length; i++) {
                     str += "<div class='layui-card'>" +
                         " <div class='layui-card-header'>订单编号:" + res.data[i].uuid +
@@ -135,6 +156,7 @@
             url: 'user/getLoginUser',
             async: false,
             success: function (res) {
+                //console.log(res);
                 $(".username").html(res.data.username);
                 $("#userid").val(res.data.id);
                 $("#uname").val(res.data.username);
