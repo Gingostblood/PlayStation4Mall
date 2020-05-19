@@ -7,8 +7,6 @@ import com.gingost.layui.domain.vo.LayuiTableVo;
 import com.gingost.layui.domain.vo.LayuiTransferVo;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.util.List;
-
 /**
  * @author:lezzy
  * @Date:2020/4/2 0:56

@@ -1,7 +1,6 @@
 package com.gingost.website.service.Impl;
 
 import com.gingost.website.dao.UserDao;
-import com.gingost.website.domain.TestUser;
 import com.gingost.website.domain.WebUser;
 import lombok.AllArgsConstructor;
 import org.apache.shiro.authc.*;

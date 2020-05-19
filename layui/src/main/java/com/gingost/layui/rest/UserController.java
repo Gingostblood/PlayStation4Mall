@@ -2,20 +2,14 @@ package com.gingost.layui.rest;
 
 import com.gingost.layui.annotation.Log;
 import com.gingost.layui.common.ResponseEntity;
-import com.gingost.layui.domain.User;
 import com.gingost.layui.domain.dto.req.UserReqDto;
 import com.gingost.layui.domain.dto.resp.UserRespDto;
 import com.gingost.layui.domain.vo.LayuiTableVo;
-import com.gingost.layui.domain.vo.LayuiTransferVo;
 import com.gingost.layui.service.UserService;
 import com.gingost.layui.untils.SecurityUtils;
-import org.apache.catalina.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author:lezzy

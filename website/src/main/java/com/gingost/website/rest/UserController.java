@@ -1,7 +1,6 @@
 package com.gingost.website.rest;
 
 import com.gingost.website.common.ResponseEntity;
-import com.gingost.website.domain.TestUser;
 import com.gingost.website.domain.WebUser;
 import com.gingost.website.domain.vo.LayuiTableVo;
 import com.gingost.website.domain.vo.OrderVo;

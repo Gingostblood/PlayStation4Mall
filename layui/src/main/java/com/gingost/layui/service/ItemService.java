@@ -2,7 +2,6 @@ package com.gingost.layui.service;
 
 import com.gingost.layui.domain.Item;
 import com.gingost.layui.domain.dto.QueryCriteria.ItemQueryCriteria;
-import com.gingost.layui.domain.dto.req.ItemReqDto;
 import com.gingost.layui.domain.dto.resp.ItemRespDto;
 import com.gingost.layui.domain.vo.LayuiTableVo;
 

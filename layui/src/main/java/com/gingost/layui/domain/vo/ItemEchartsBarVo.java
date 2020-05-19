@@ -3,7 +3,6 @@ package com.gingost.layui.domain.vo;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author:lezzy

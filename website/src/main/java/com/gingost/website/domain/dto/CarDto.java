@@ -3,7 +3,6 @@ package com.gingost.website.domain.dto;
 import com.gingost.website.domain.Car;
 import com.gingost.website.domain.Item;
 import com.gingost.website.domain.vo.ButtonCss;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

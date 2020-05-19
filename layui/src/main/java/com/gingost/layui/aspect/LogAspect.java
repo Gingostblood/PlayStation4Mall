@@ -2,7 +2,6 @@ package com.gingost.layui.aspect;
 
 import com.gingost.layui.domain.system.Log;
 import com.gingost.layui.service.LogService;
-
 import com.gingost.layui.untils.HttpUtils;
 import com.gingost.layui.untils.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;

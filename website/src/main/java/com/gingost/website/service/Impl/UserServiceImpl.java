@@ -5,7 +5,6 @@ import com.gingost.website.dao.ItemDao;
 import com.gingost.website.dao.UserDao;
 import com.gingost.website.domain.OrderInfo;
 import com.gingost.website.domain.Orders;
-import com.gingost.website.domain.TestUser;
 import com.gingost.website.domain.WebUser;
 import com.gingost.website.domain.vo.LayuiTableVo;
 import com.gingost.website.domain.vo.MyOrderInfoVo;
@@ -13,7 +12,6 @@ import com.gingost.website.domain.vo.OrderVo;
 import com.gingost.website.service.UserService;
 import lombok.AllArgsConstructor;
 import org.apache.shiro.crypto.hash.SimpleHash;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

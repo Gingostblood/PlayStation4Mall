@@ -4,7 +4,6 @@ import com.gingost.website.dao.ItemDao;
 import com.gingost.website.domain.Item;
 import com.gingost.website.service.ItemService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

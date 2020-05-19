@@ -1,7 +1,6 @@
 package com.gingost.layui.untils;
 
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * @Author:lezzy

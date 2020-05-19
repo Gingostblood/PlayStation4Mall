@@ -2,7 +2,6 @@ package com.gingost.website.dao;
 
 import com.gingost.website.domain.OrderInfo;
 import com.gingost.website.domain.Orders;
-import com.gingost.website.domain.TestUser;
 import com.gingost.website.domain.WebUser;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;

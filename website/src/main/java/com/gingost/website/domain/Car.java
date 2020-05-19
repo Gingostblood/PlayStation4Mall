@@ -1,6 +1,5 @@
 package com.gingost.website.domain;
 
-import com.gingost.website.domain.common.BaseEntity;
 import lombok.Data;
 
 /**

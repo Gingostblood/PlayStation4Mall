@@ -1,6 +1,5 @@
 package com.gingost.website.service;
 
-import com.gingost.website.common.ResponseEntity;
 import com.gingost.website.domain.Address;
 import com.gingost.website.domain.Car;
 import com.gingost.website.domain.WebUser;
