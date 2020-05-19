@@ -37,6 +37,9 @@ public interface UserDao {
     @Select("select count(*) from web_user where ${key}=#{value} and id !=#{id}")
     int isHave(@Param("key")String key, @Param("value")String value,@Param("id")Integer id);
 
-    @Update("update web_user set email=#{email},phone=#{phone} where id=#{id}")
+    @Update("update web_user set email=#{email},phone=#{phone},update_time=now() where id=#{id}")
     int updateUser(WebUser userById);
+
+    @Update("update web_user set password=#{password},salt=#{salt},update_time=now() where id=#{id} ")
+    int changeUserPwd(WebUser user);
 }

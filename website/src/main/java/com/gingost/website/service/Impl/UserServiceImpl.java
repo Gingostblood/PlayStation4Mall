@@ -10,6 +10,7 @@ import com.gingost.website.domain.vo.LayuiTableVo;
 import com.gingost.website.domain.vo.MyOrderInfoVo;
 import com.gingost.website.domain.vo.OrderVo;
 import com.gingost.website.service.UserService;
+import com.gingost.website.utils.PageUtils;
 import lombok.AllArgsConstructor;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.stereotype.Service;
@@ -74,7 +75,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<MyOrderInfoVo> getOrderInfo() {
+    public List<MyOrderInfoVo> getOrderInfo(Integer page, Integer size) {
         List<MyOrderInfoVo> list = new ArrayList<>();
         Integer userid = ShiroUtil.getLoginUser().getId();
         List<Orders> ordersList = userDao.finOrderByUserId(userid);
@@ -90,7 +91,7 @@ public class UserServiceImpl implements UserService {
             }
             list.add(myOrderInfoVo);
         }
-        return list;
+        return PageUtils.toPage(page - 1, size, list);
     }
 
     @Override
@@ -123,8 +124,29 @@ public class UserServiceImpl implements UserService {
         userById.setPhone(user.getPhone());
         userById.setUpdateTime(new Date());
         int i = userDao.updateUser(userById);
-        if (i!=1){
+        if (i != 1) {
             throw new RuntimeException("发生了不可知错误，请重试");
+        }
+    }
+
+    @Override
+    public Integer getUserOrdersCount() {
+        return userDao.finOrderByUserId(ShiroUtil.getLoginUser().getId()).size();
+    }
+
+    @Override
+    public int changePwd(String oldpwd, String newpwd) {
+        WebUser user = userDao.findUserById(ShiroUtil.getLoginUser().getId());
+        String hashPwd = new SimpleHash("MD5", oldpwd, user.getSalt(), 1).toHex();
+        if (user.getPassword().equals(hashPwd)) {
+            String salt = UUID.randomUUID().toString();
+            String newPwd = new SimpleHash("MD5", newpwd, salt, 1).toHex();
+            user.setSalt(salt);
+            user.setPassword(newPwd);
+            int i=userDao.changeUserPwd(user);
+            return i;
+        }else {
+            throw new RuntimeException("原密码错误");
         }
     }
 }

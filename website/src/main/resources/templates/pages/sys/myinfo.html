@@ -81,14 +81,40 @@
                             </div>
                         </div>
                     </form>
-                    <button id="changeUser" type="button" class="layui-btn layui-btn-radius layui-btn-normal">确认修改</button>
+                    <button id="changeUser" type="button" class="layui-btn layui-btn-radius layui-btn-normal">确认修改
+                    </button>
                 </div>
                 <div class="layui-tab-item">
-                    <div id="address"></div>
-                    <div id="page"></div>
+                    <div id="order"></div>
+                    <div id="page" style="margin-left: auto"></div>
                 </div>
                 <div class="layui-tab-item">内容3</div>
-                <div class="layui-tab-item">内容4</div>
+                <div class="layui-tab-item">
+                    <form class="layui-form layui-form-pane">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">原密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" id="oldpwd" required lay-verify="required" autocomplete="off"
+                                       class="layui-input" >
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">新密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" id="newpwd" required lay-verify="required" autocomplete="off"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">确认密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" id="repwd" required lay-verify="required"
+                                       autocomplete="off" class="layui-input" >
+                            </div>
+                        </div>
+                    </form>
+                    <button id="changePwd" type="button" class="layui-btn layui-btn-radius layui-btn-normal">确认修改
+                </div>
                 <div class="layui-tab-item">内容5</div>
             </div>
         </div>
@@ -107,49 +133,92 @@
 
         $("#changeUser").click(function () {
             $.ajax({
-                type:"put",
-                url:"user/changeUser",
-                data:{
-                    id:$("#userid").val(),
-                    email:$("#email").val(),
-                    phone:$("#phone").val()
+                type: "put",
+                url: "user/changeUser",
+                data: {
+                    id: $("#userid").val(),
+                    email: $("#email").val(),
+                    phone: $("#phone").val()
                 },
-                success:function (res) {
+                success: function (res) {
                     alert(res.msg);
-                    if(res.code==0){
+                    if (res.code == 0) {
                         getLoginUser()
                     }
+                }
+            })
+        });
+
+        $("#changePwd").click(function () {
+            var oldpwd=$("#oldpwd").val();
+            var newpwd=$("#newpwd").val();
+            var repwd=$("#repwd").val();
+            if(newpwd!=repwd){
+                alert("新密码与确认密码匹配，请重新输入")
+                return false;
+            }
+            $.ajax({
+                type:"put",
+                url:"user/changePwd",
+                async: false,
+                data:{
+                    oldpwd:oldpwd,
+                    newpwd:newpwd
+                },
+                success:function (res) {
+                    alert(res.msg)
                 }
             })
         })
     })
 
 
-
     function getOrderInfo() {
         $.ajax({
             type: 'get',
-            url: 'user/getUserOrders',
+            url: 'user/getUserOrdersCount',
             success: function (res) {
-                var str = "";
-                console.log(res)
+                layui.use('laypage', function () {
+                    var laypage = layui.laypage;
+                    laypage.render({
+                        elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+                        , limit: 5
+                        , count: res //数据总数，从服务端得到
+                        , jump: function (obj, first) {
+                            $.ajax({
+                                type: 'get',
+                                url: 'user/getUserOrders',
+                                data: {
+                                    page: obj.curr,
+                                    size: 5,
+                                },
+                                success: function (res) {
+                                    var str = "";
+                                    console.log(res)
 
-                for (var i = 0; i < res.data.length; i++) {
-                    str += "<div class='layui-card'>" +
-                        " <div class='layui-card-header'>订单编号:" + res.data[i].uuid +
-                        "<button class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger' style='margin-left:600px;'>" + res.data[i].btnName + "</button>" +
-                        "</div>" +
-                        "<div class='layui-card-body'>" +
-                        "<table class='layui-hide' id='test"+res.data[i].id+"' lay-filter='test'></table>"+
-                        "</div></div>"
-                }
-                $("#order").html(str);
-                for (var i = 0; i < res.data.length; i++) {
-                    fktable(res.data[i].id)
-                }
+                                    for (var i = 0; i < res.data.length; i++) {
+                                        str += "<div class='layui-card'>" +
+                                            " <div class='layui-card-header'>订单编号:" + res.data[i].uuid +
+                                            "<button class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger' style='margin-left:600px;'>" + res.data[i].btnName + "</button>" +
+                                            "</div>" +
+                                            "<div class='layui-card-body'>" +
+                                            "<table class='layui-hide' id='test" + res.data[i].id + "' lay-filter='test'></table>" +
+                                            "</div></div>"
+                                    }
+                                    $("#order").html(str);
+                                    for (var i = 0; i < res.data.length; i++) {
+                                        fktable(res.data[i].id)
+                                    }
+                                }
+                            })
+                        }
+                    });
+                });
+
             }
         })
     }
+
     function getLoginUser() {
         $.ajax({
             type: 'get',
@@ -171,19 +240,19 @@
         layui.use('table', function () {
             var table = layui.table;
             table.render({
-                elem: '#test'+id
+                elem: '#test' + id
                 , url: 'user/getOrderInfoByOrderId'
-                ,response: {
-                    dataName: 'list'//修改layui封装的参数名limit->size
+                , response: {
+                    dataName: 'list'
                 }
-                ,where:{
-                    orderId:id
+                , where: {
+                    orderId: id
                 }
                 , title: '用户数据表'
                 , cols: [
                     [
-                        { field: 'name', title: '名称', width: 447, fixed: 'left' }
-                        , { field: 'num', title: '数量', width: 447, fixed: 'right' }
+                        {field: 'name', title: '名称', width: 447, fixed: 'left'}
+                        , {field: 'num', title: '数量', width: 447, fixed: 'right'}
                     ]
                 ]
                 , page: false

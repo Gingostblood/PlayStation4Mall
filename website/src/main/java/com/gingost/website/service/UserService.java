@@ -22,9 +22,13 @@ public interface UserService {
 
     WebUser findUserById(Integer id);
 
-    List<MyOrderInfoVo> getOrderInfo();
+    List<MyOrderInfoVo> getOrderInfo(Integer page,Integer size);
 
     LayuiTableVo<OrderVo> getOrderInfoByOrderId(Integer orderId);
 
     void changeUser(WebUser user);
+
+    Integer getUserOrdersCount();
+
+    int changePwd(String oldpwd, String newpwd);
 }

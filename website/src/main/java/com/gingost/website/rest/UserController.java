@@ -50,8 +50,8 @@ public class UserController {
     }
 
     @GetMapping("getUserOrders")
-    private ResponseEntity getOrderInfo() {
-        return new ResponseEntity(userService.getOrderInfo());
+    private ResponseEntity getOrderInfo(Integer page,Integer size) {
+        return new ResponseEntity(userService.getOrderInfo(page,size));
     }
 
     @GetMapping("getOrderInfoByOrderId")
@@ -68,5 +68,15 @@ public class UserController {
     @GetMapping("findUserByid")
     public ResponseEntity findUserByid(Integer id){
         return new ResponseEntity(userService.findUserById(id));
+    }
+
+    @GetMapping("getUserOrdersCount")
+    public Integer getUserOrdersCount(){
+        return userService.getUserOrdersCount();
+    }
+
+    @PutMapping("changePwd")
+    public ResponseEntity changePwd(String oldpwd,String newpwd){
+        return new ResponseEntity(userService.changePwd(oldpwd,newpwd),"修改密码成功，下次登录时将会生效");
     }
 }
