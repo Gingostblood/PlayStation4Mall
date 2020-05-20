@@ -1,8 +1,10 @@
 package com.gingost.website.service;
 
+import com.gingost.website.domain.Evaluate;
 import com.gingost.website.domain.Item;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Lezzy
@@ -16,4 +18,8 @@ public interface ItemService {
     int getItemCount(String pid);
 
     Item getItemByid(Integer id);
+
+    List getItemEvaluate(Integer itemId,int page,int size);
+
+    Map getItemEvaluateCount(Integer itemId);
 }

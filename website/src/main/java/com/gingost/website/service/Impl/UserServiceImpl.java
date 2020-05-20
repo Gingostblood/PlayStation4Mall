@@ -1,6 +1,6 @@
 package com.gingost.website.service.Impl;
 
-import com.gingost.website.common.ShiroUtil;
+import com.gingost.website.utils.ShiroUtil;
 import com.gingost.website.dao.EvaluateDao;
 import com.gingost.website.dao.ItemDao;
 import com.gingost.website.dao.OrdersDao;
@@ -15,7 +15,6 @@ import com.gingost.website.domain.vo.OrderVo;
 import com.gingost.website.service.UserService;
 import com.gingost.website.utils.PageUtils;
 import lombok.AllArgsConstructor;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -150,21 +149,21 @@ public class UserServiceImpl implements UserService {
             String newPwd = new SimpleHash("MD5", newpwd, salt, 1).toHex();
             user.setSalt(salt);
             user.setPassword(newPwd);
-            int i=userDao.changeUserPwd(user);
+            int i = userDao.changeUserPwd(user);
             return i;
-        }else {
+        } else {
             throw new RuntimeException("原密码错误");
         }
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int changeOrderType(String type,Integer id) {
+    public int changeOrderType(String type, Integer id) {
         try {
-            if (type.equals("close")){
-                ordersDao.changeOrderTypeById(2,id);
-            }else if(type.equals("sure")){
-                ordersDao.changeOrderTypeById(3,id);
+            if (type.equals("close")) {
+                ordersDao.changeOrderTypeById(2, id);
+            } else if (type.equals("sure")) {
+                ordersDao.changeOrderTypeById(3, id);
             }
         } catch (Exception e) {
             throw new RuntimeException("操作失败");
@@ -194,11 +193,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Map> findEvaluateList(Integer orderid) {
         List<OrderInfo> orderInfoList = userDao.findOrderInfoByOrderId(orderid);
-        List<Map> list=new ArrayList<>();
-        for (OrderInfo orderInfo:orderInfoList){
-            Map<String,Object> map=new LinkedHashMap<>();
-            map.put("id",orderInfo.getItemId());
-            map.put("name",itemDao.getItemByid(orderInfo.getItemId()).getItemName());
+        List<Map> list = new ArrayList<>();
+        for (OrderInfo orderInfo : orderInfoList) {
+            Map<String, Object> map = new LinkedHashMap<>();
+            map.put("id", orderInfo.getItemId());
+            map.put("name", itemDao.getItemByid(orderInfo.getItemId()).getItemName());
             list.add(map);
         }
         return list;
@@ -207,13 +206,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int goToEvaluate(Evaluate evaluate) {
-        int i=0;
-        try {
-            evaluate.setUsername(ShiroUtil.getLoginUser().getUsername());
-            evaluateDao.saveEvaluate(evaluate);
-        } catch (Exception e) {
-           throw new RuntimeException("服务器开了个小差");
+        evaluate.setUsername(ShiroUtil.getLoginUser().getUsername());
+        int i = evaluateDao.isAlreadyEvaluate(evaluate.getItemId(), ShiroUtil.getLoginUser().getUsername());
+        if (i != 0) {
+            throw new RuntimeException("您已经评价过该商品");
         }
+        evaluateDao.saveEvaluate(evaluate);
         return 0;
     }
 }

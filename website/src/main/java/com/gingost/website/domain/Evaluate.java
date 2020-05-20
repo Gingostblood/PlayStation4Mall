@@ -1,5 +1,6 @@
 package com.gingost.website.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.sql.Timestamp;
@@ -16,5 +17,6 @@ public class Evaluate {
     private String info;
     private Integer itemId;
     private Integer star;
+    @JsonFormat(pattern = "yyyy-HH-dd")
     private Timestamp createTime;
 }

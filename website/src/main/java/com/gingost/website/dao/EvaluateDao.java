@@ -21,4 +21,7 @@ public interface EvaluateDao {
 
     @Insert("insert into evaluate values(null,#{username},#{info},#{itemId},#{star},now())")
     void saveEvaluate(Evaluate evaluate);
+
+    @Select("select count(*) from evaluate where item_id=#{itemId} and username=#{username}")
+    int isAlreadyEvaluate(Integer itemId,String username);
 }

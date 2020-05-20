@@ -1,6 +1,6 @@
 package com.gingost.website.service.Impl;
 
-import com.gingost.website.common.ShiroUtil;
+import com.gingost.website.utils.ShiroUtil;
 import com.gingost.website.dao.*;
 import com.gingost.website.domain.*;
 import com.gingost.website.domain.dto.CarDto;

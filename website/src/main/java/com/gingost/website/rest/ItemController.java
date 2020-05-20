@@ -18,18 +18,29 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class ItemController {
     private ItemService itemService;
+
     @GetMapping("findAllItem")
-    public ResponseEntity findAllItem(String pid,Integer page){
-        return new ResponseEntity(itemService.findAllItem(pid,(page-1)*24));
+    public ResponseEntity findAllItem(String pid, Integer page) {
+        return new ResponseEntity(itemService.findAllItem(pid, (page - 1) * 24));
     }
 
     @GetMapping("getItemCount")
-    public int getItemCount(String pid){
+    public int getItemCount(String pid) {
         return itemService.getItemCount(pid);
     }
 
     @GetMapping("getItemByid")
-    public ResponseEntity getItemByid(Integer id){
+    public ResponseEntity getItemByid(Integer id) {
         return new ResponseEntity(itemService.getItemByid(id));
+    }
+
+    @GetMapping("getItemEvaluate")
+    public ResponseEntity getItemEvaluate(Integer itemId, int page, int size) {
+        return new ResponseEntity(itemService.getItemEvaluate(itemId, page, size));
+    }
+
+    @GetMapping("getItemEvaluateCount")
+    public ResponseEntity getItemEvaluateCount(Integer itemId) {
+        return new ResponseEntity(itemService.getItemEvaluateCount(itemId));
     }
 }

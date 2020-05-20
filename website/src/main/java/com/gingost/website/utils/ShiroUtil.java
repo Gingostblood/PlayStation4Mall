@@ -1,4 +1,4 @@
-package com.gingost.website.common;
+package com.gingost.website.utils;
 
 import com.gingost.website.domain.WebUser;
 import org.apache.shiro.SecurityUtils;
