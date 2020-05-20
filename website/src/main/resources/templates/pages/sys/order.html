@@ -65,24 +65,7 @@
             </div>
             <div class="layui-form-item" pane>
                 <label class="layui-form-label">选择地址</label>
-                <div id="address"></div>
-                <!--                -->
-                <!--                <div class="layui-input-inline">-->
-                <!--                    <input type="text" name="title" required lay-verify="required" placeholder="请输入地址"-->
-                <!--                           autocomplete="off" class="layui-input" id="province">省-->
-                <!--                </div>-->
-                <!--                <div class="layui-input-inline">-->
-                <!--                    <input type="text" name="title" required lay-verify="required" placeholder="请输入地址"-->
-                <!--                           autocomplete="off" class="layui-input" id="county">市-->
-                <!--                </div>-->
-                <!--                <div class="layui-input-inline">-->
-                <!--                    <input type="text" name="title" required lay-verify="required" placeholder="请输入地址"-->
-                <!--                           autocomplete="off" class="layui-input" id="city">县/（区）-->
-                <!--                </div>-->
-                <!--                <div class="layui-input-inline">-->
-                <!--                    <input type="text" name="title" required lay-verify="required" placeholder="请输入联系电话"-->
-                <!--                           autocomplete="off" class="layui-input" id="street">街道-->
-                <!--                </div>-->
+                <div id="ads"  class="layui-input-block"></div>
             </div>
         </form>
         <hr>
@@ -194,7 +177,7 @@
                 for (i = 0; i < res.data.length; i++) {
                     str += " <input type='radio' name='address' value='"+res.data[i].id+"' title=" + res.data[i].province + "" + res.data[i].county + "" + res.data[i].city + "" + res.data[i].street + "" + res.data[i].postcode + "><br>"
                 }
-                $("#address").html(str)
+                $("#ads").html(str)
                 layui.use('form', function () {
                     var form = layui.form;
                     form.render();
