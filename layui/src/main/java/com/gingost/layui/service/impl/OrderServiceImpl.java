@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -102,7 +103,10 @@ public class OrderServiceImpl implements OrderService {
         page = page - 1;
         Pageable pageable = PageRequest.of(page, size);
         OrderQueryCriteria req = new OrderQueryCriteria();
-        req.setTypes(1);
+        List<Integer> list=new ArrayList<>();
+        list.add(1);
+        list.add(3);
+        req.setType(list);
         Page<Order> all = orderJpa.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, req, criteriaBuilder), pageable);
         List<Order> orderList = all.getContent();
         List<OrderRespDto> orderRespDtos = orderMapper.toDto(orderList);

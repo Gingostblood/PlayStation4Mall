@@ -2,6 +2,7 @@ package com.gingost.layui.rest;
 
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -118,4 +119,20 @@ public class PageController {
     public String login() {
         return "login";
     }
+
+
+
+    //
+    @Secured({"ROLE_ADMIN", "ROLE_WEB"})
+    @RequestMapping("image/image_rush")
+    public String rush(){
+        return "sys/image_rush";
+    }
+
+    @Secured({"ROLE_ADMIN", "ROLE_WEB"})
+    @RequestMapping("news/news_push")
+    public String push(){
+        return "sys/news_push";
+    }
+
 }

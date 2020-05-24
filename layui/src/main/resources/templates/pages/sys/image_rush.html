@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Layui</title>
+    <link rel="stylesheet" href="css/modules/layui.css" media="all">
+</head>
+
+<body>
+<form class="layui-form layui-form-pane">
+    <div class="layui-form-item">
+        <label class="layui-form-label">重置轮播</label>
+        <button class="layui-btn" type="button" id="rest">
+            <i class="layui-icon">&#xe748;</i>
+            重置图片
+        </button>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">上传轮播图</label>
+        <button class="layui-btn" type="button" id="upload">
+            <i class="layui-icon">&#xe67c;</i>
+            上传图片
+        </button>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">轮播预览</label>
+    </div>
+</form>
+<div id="show">
+    <div class="layui-card">
+        <div class="layui-card-header">轮播图1</div>
+        <div class="layui-card-body">
+        </div>
+    </div>
+</div>
+
+
+</body>
+<script src="js/JQuery/jquery-3.4.1.min.js"></script>
+<script src="js/layuiJs/layui.all.js"></script>
+<script>
+    $(function () {
+        getImage();
+        layui.use('upload', function () {
+            var upload = layui.upload;
+            var uploadInst = upload.render({
+                elem: "#upload",
+                url: "/rush",
+                done: function (res) {
+                    alert("上传成功");
+                    getImage();
+                }
+            })
+        })
+
+        $("#rest").click(function () {
+            $.ajax({
+                url: "rest",
+                type: "put",
+                async: false,
+                success: function () {
+                    alert("重置成功");
+                    getImage();
+                }
+            })
+        })
+    })
+
+    function getImage() {
+        $.ajax({
+            url: "find",
+            type: "get",
+            async: false,
+            success: function (res) {
+                var str = ""
+                for (let i = 0; i < res.data.length; i++) {
+                    str += "<div class='layui-card'>" +
+                        "        <div class='layui-card-header'>轮播图"+res.data[i].id+"</div>" +
+                        "        <div class='layui-card-body'>" +
+                        "            <img src='"+ res.data[i].url+"' alt=''>" +
+                        "        </div>" +
+                        "    </div>"
+                }
+                $("#show").html(str);
+            }
+        })
+    }
+</script>
+
+</html>

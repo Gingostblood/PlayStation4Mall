@@ -38,12 +38,8 @@
     <div class="main">
         <div class="overimg">
             <div class="layui-carousel" id="overimg" style="margin-top: 50px;">
-                <div carousel-item>
+                <div carousel-item id="rush">
                     <div><img src="img/overimg/1.jpg" alt=""></div>
-                    <div><img src="img/overimg/2.jpg" alt=""></div>
-                    <div><img src="img/overimg/3.jpg" alt=""></div>
-                    <div><img src="img/overimg/4.jpg" alt=""></div>
-                    <div><img src="img/overimg/5.jpg" alt=""></div>
                 </div>
             </div>
             <div style="text-align: center; font-size: 18px;">爆款热销</div>
@@ -91,22 +87,13 @@
         doLoadImg();
         doLoadMenu(1, 2);
         getLoginUser();
+        getRushImage();
     })
 
     layui.use('element', function () {
         var element = layui.element;
     });
-    layui.use('carousel', function () {
-        var carousel = layui.carousel;
-        //建造实例
-        carousel.render({
-            elem: '#overimg'
-            , width: '950px' //设置容器宽度
-            , height: '400px'
-            , arrow: 'always' //始终显示箭头
-            , anim: 'fade' //切换动画方式
-        });
-    });
+
 
     function getLoginUser() {
         $.get("user/getLoginUser", function (res) {
@@ -216,6 +203,33 @@
         }
         //console.log(str1)
         $("#img").html(str1)
+    }
+
+    function getRushImage() {
+        $.ajax({
+            type:"get",
+            url:"image/findRushImage",
+            async:false,
+            success:function (res) {
+                console.log(res);
+                let str3="";
+                for (var i=0;i<res.data.length;i++){
+                    str3+="<div><img src='"+res.data[i].url+"' alt=''></div>"
+                }
+                $("#rush").html(str3);
+                layui.use('carousel', function () {
+                    var carousel = layui.carousel;
+                    //建造实例
+                    carousel.render({
+                        elem: '#overimg'
+                        , width: '950px' //设置容器宽度
+                        , height: '400px'
+                        , arrow: 'always' //始终显示箭头
+                        , anim: 'fade' //切换动画方式
+                    });
+                });
+            }
+        })
     }
 </script>
 </html>
