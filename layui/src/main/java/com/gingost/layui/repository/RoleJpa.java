@@ -23,6 +23,5 @@ public interface RoleJpa extends JpaRepository<Role,Integer>, JpaSpecificationEx
     @Query(value="insert into user_role values (?1,?2)",nativeQuery=true)
     void saveUserRole(Integer userid,Integer role_id);
 
-
     List<Role> findAllByIdIsNot(Integer id);
 }

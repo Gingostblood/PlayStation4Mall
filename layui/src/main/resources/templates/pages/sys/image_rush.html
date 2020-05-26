@@ -39,8 +39,12 @@
 </body>
 <script src="js/JQuery/jquery-3.4.1.min.js"></script>
 <script src="js/layuiJs/layui.all.js"></script>
+<script src="js/layuiJs/element.js"></script>
 <script>
     $(function () {
+        layui.use('element',function () {
+            var element=layui.element;
+        });
         getImage();
         layui.use('upload', function () {
             var upload = layui.upload;
