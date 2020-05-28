@@ -28,7 +28,7 @@
         <a href="car" target='_blank' class="index">
             <i class="layui-icon">&#xe657;</i>
             购物车</a>&nbsp;&nbsp;
-        <a href="" >
+        <a href="">
             <i class="layui-icon">&#xe626;</i>
             在线客服</a>&nbsp;&nbsp;
         <a href="">
@@ -62,10 +62,10 @@
         </div>
         <div style="margin-top: 15px">
             <div class="layui-input-inline" style="float: left">
-                <input type="text" name="" placeholder="请输入关键词" autocomplete="off" class="layui-input">
+                <input type="text" id="itemName" placeholder="请输入关键词" autocomplete="off" class="layui-input">
             </div>
-            <div  style="float: left">
-                <button type="button" class="layui-btn layui-btn-normal layui-btn-radius">搜索</button>
+            <div style="float: left">
+                <button type="button" id="fuzzyQuery" class="layui-btn layui-btn-normal layui-btn-radius">搜索</button>
             </div>
         </div>
         <div style=" margin-top: 60px;" id="item">
@@ -88,6 +88,47 @@
         doLoadMenu(1, 2);
         getLoginUser();
         getRushImage();
+        $("#fuzzyQuery").click(function () {
+            var name=$("#itemName").val();
+            if(name==null||name.length==0){
+                doLoadImg();
+            }else{
+                $.ajax({
+                    type: "get",
+                    url: "item/getFuzzyQueryItemCount",
+                    async: false,
+                    data: {
+                        itemName: name
+                    },
+                    success: function (count) {
+                        layui.use('laypage', function () {
+                            var laypage = layui.laypage;
+
+                            //执行一个laypage实例
+                            laypage.render({
+                                elem: 'page'
+                                , count: count
+                                , limit: 24
+                                , jump: function (obj, first) {
+                                    $.ajax({
+                                        type: "get",
+                                        url: "item/getFuzzyQueryItem",
+                                        async: false,
+                                        data: {
+                                            itemName: name,
+                                            page: obj.curr
+                                        },
+                                        success: function (res) {
+                                            doHandlerImg(res.data)
+                                        }
+                                    })
+                                }
+                            });
+                        });
+                    }
+                })
+            }
+        })
     })
 
     layui.use('element', function () {
@@ -164,8 +205,8 @@
 
                     //执行一个laypage实例
                     laypage.render({
-                        elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
-                        , count: count //数据总数，从服务端得到
+                        elem: 'page'
+                        , count: count
                         , limit: 24
                         , jump: function (obj, first) {
                             $.ajax({
@@ -195,7 +236,7 @@
                 "<a href='/getItemInfo?id=" + data[i].id + "&lezzy=" + Math.random() + "' target='_blank'> <img src=" + data[i].itemLogo + " alt='' width='230px'>" +
                 "<ul>" +
                 "<li style='color: #3366cc ; font-size: 16px;'>" + data[i].itemName + "</li>" +
-                "<li style='color: red ; font-size: 16px;'>¥" + data[i].itemPrice +"&nbsp;|&nbsp;&nbsp;销量:"+data[i].itemSales+"</li>" +
+                "<li style='color: red ; font-size: 16px;'>¥" + data[i].itemPrice + "&nbsp;|&nbsp;&nbsp;销量:" + data[i].itemSales + "</li>" +
                 "</ul>" +
                 "</a>" +
                 "</div>" +
@@ -207,14 +248,14 @@
 
     function getRushImage() {
         $.ajax({
-            type:"get",
-            url:"image/findRushImage",
-            async:false,
-            success:function (res) {
+            type: "get",
+            url: "image/findRushImage",
+            async: false,
+            success: function (res) {
                 console.log(res);
-                let str3="";
-                for (var i=0;i<res.data.length;i++){
-                    str3+="<div><img src='"+res.data[i].url+"' alt=''></div>"
+                let str3 = "";
+                for (var i = 0; i < res.data.length; i++) {
+                    str3 += "<div><img src='" + res.data[i].url + "' alt=''></div>"
                 }
                 $("#rush").html(str3);
                 layui.use('carousel', function () {

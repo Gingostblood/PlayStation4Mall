@@ -47,7 +47,7 @@
                 <li>未完成订单</li>
                 <li>已完成订单</li>
                 <li>修改密码</li>
-<!--                <li>订单管理</li>-->
+                <li>收货地址</li>
             </ul>
             <div class="layui-tab-content" style="height: 1000px;">
                 <div class="layui-tab-item layui-show">
@@ -119,12 +119,26 @@
                     <button id="changePwd" type="button" class="layui-btn layui-btn-radius layui-btn-normal">确认修改
                     </button>
                 </div>
-                <div class="layui-tab-item">内容5</div>
+                <div class="layui-tab-item">
+                    <table class="layui-hide" id="addressTable" lay-filter="lezzy"></table>
+                </div>
             </div>
         </div>
     </div>
 </div>
 </body>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="add">新增收货地址
+            <i class="layui-icon">&#xe654;</i>
+        </button>
+    </div>
+</script>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
 <script src="js/jquery-3.4.1.min.js"></script>
 <script type="text/javascript">
     $(function () {
@@ -135,6 +149,7 @@
         getLoginUser();
         getOrderInfo()
         getHistoryOrderInfo();
+        getAddressTable();
 
         $("#changeUser").click(function () {
             $.ajax({
@@ -365,6 +380,53 @@
                 content: 'evaluate?id=' + id
             })
         });
+    }
+
+    function getAddressTable() {
+        layui.use('table', function () {
+            var table = layui.table;
+            table.render({
+                elem: '#addressTable'
+                , url: 'address/findAllAddress'
+                , toolbar: '#toolbarDemo'
+                , title: '地址表'
+                // , totalRow: true
+                ,response: {
+                    dataName: 'list'
+                }
+                , cols: [
+                    [
+                         {field: 'address', title: '收货地址', width: 300, fixed: 'left'}
+                        ,{field: 'postcode', title: '邮政编码', width: 150,}
+                        ,{fixed: 'right', width: 200, align: 'center', title: '操作', toolbar: '#barDemo'}
+                    ]
+                ]
+                , page: false
+            });
+
+            table.on('tool(lezzy)', function (obj) {
+                console.log(obj);
+                var data = obj.data.id;
+                var event = obj.event;
+                if (event == 'detail') {
+                    console.log(data);
+                } else if (event == 'del') {
+                    alert("确定要删除该地址吗？");
+                    $.ajax({
+                        type: "put",
+                        async: false,
+                        url: "address/deleteAddressById",
+                        data: {
+                            id: data
+                        },
+                        success: function (res) {
+                            alert(res.msg)
+                        }
+                    })
+                    getAddressTable();
+                }
+            });
+        })
     }
 </script>
 </html>

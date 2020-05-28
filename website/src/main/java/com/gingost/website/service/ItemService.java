@@ -22,4 +22,8 @@ public interface ItemService {
     List getItemEvaluate(Integer itemId,int page,int size);
 
     Map getItemEvaluateCount(Integer itemId);
+
+    int getFuzzyQueryItemCount(String itemName);
+
+    List<Item> getFuzzyQueryItem(String itemName,int page);
 }

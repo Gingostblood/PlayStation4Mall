@@ -28,20 +28,21 @@ import java.util.Map;
 public class ItemServiceImpl implements ItemService {
     private ItemDao itemDao;
     private EvaluateDao evaluateDao;
+
     @Override
-    public List<Item> findAllItem(String pid,int page) {
-        if(pid==null||pid.equals("")){
-            return  itemDao.findAllItem(page);
-        }else
-            return itemDao.findAllItemByPid(Integer.parseInt(pid),page);
+    public List<Item> findAllItem(String pid, int page) {
+        if (pid == null || pid.equals("")) {
+            return itemDao.findAllItem(page);
+        } else
+            return itemDao.findAllItemByPid(Integer.parseInt(pid), page);
 
     }
 
     @Override
     public int getItemCount(String pid) {
-        if(pid==null||pid.equals("")){
+        if (pid == null || pid.equals("")) {
             return itemDao.getItemCount();
-        }else
+        } else
             return itemDao.getItemCountByPid(Integer.parseInt(pid));
     }
 
@@ -51,23 +52,33 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List getItemEvaluate(Integer itemId,int page,int size) {
+    public List getItemEvaluate(Integer itemId, int page, int size) {
         List<Evaluate> evaluateList = evaluateDao.findAllEvaluateByItemId(itemId);
         //DateTimeFormatter dateTimeFormatter=DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-       return PageUtils.toPage(page-1,size,evaluateList);
+        return PageUtils.toPage(page - 1, size, evaluateList);
     }
 
     @Override
     public Map getItemEvaluateCount(Integer itemId) {
         List<Evaluate> evaluateList = evaluateDao.findAllEvaluateByItemId(itemId);
-        BigDecimal b=BigDecimal.ZERO;
-        for (Evaluate evaluate:evaluateList){
-            b=b.add(BigDecimal.valueOf(evaluate.getStar()));
+        BigDecimal b = BigDecimal.ZERO;
+        for (Evaluate evaluate : evaluateList) {
+            b = b.add(BigDecimal.valueOf(evaluate.getStar()));
         }
-        BigDecimal avg=b.divide(BigDecimal.valueOf(evaluateList.size()),1, RoundingMode.HALF_UP);
-        Map<String,Object> map=new LinkedHashMap<>();
-        map.put("avg",avg);
-        map.put("size",evaluateList.size());
+        BigDecimal avg = b.divide(BigDecimal.valueOf(evaluateList.size()), 1, RoundingMode.HALF_UP);
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("avg", avg);
+        map.put("size", evaluateList.size());
         return map;
+    }
+
+    @Override
+    public int getFuzzyQueryItemCount(String itemName) {
+        return itemDao.getFuzzyQueryItemCount("%" + itemName + "%");
+    }
+
+    @Override
+    public List<Item> getFuzzyQueryItem(String itemName, int page) {
+        return itemDao.getFuzzyQueryItem("%" + itemName + "%", page);
     }
 }

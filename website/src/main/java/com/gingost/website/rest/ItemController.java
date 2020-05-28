@@ -43,4 +43,14 @@ public class ItemController {
     public ResponseEntity getItemEvaluateCount(Integer itemId) {
         return new ResponseEntity(itemService.getItemEvaluateCount(itemId));
     }
+
+    @GetMapping("getFuzzyQueryItemCount")
+    public int getFuzzyQueryItemCount(String itemName){
+        return itemService.getFuzzyQueryItemCount(itemName);
+    }
+
+    @GetMapping("getFuzzyQueryItem")
+    public ResponseEntity getFuzzyQueryItem(String itemName,int page){
+        return new ResponseEntity(itemService.getFuzzyQueryItem(itemName,(page - 1) * 24));
+    }
 }

@@ -29,4 +29,11 @@ public interface ItemDao {
 
     @Select("select * from item where id=#{id}")
     Item getItemByid(Integer id);
+
+
+    @Select("SELECT COUNT(*) FROM item WHERE item_name like #{s}")
+    int getFuzzyQueryItemCount(String s);
+
+    @Select("SELECT * FROM item WHERE item_name like #{s} limit #{page},24")
+    List<Item> getFuzzyQueryItem(@Param("s") String s,@Param("page") int page);
 }

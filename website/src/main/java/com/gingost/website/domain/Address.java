@@ -18,4 +18,5 @@ public class Address {
     private String province;
     private String street;
     private Integer userId;
+    private Integer isDelete;
 }
