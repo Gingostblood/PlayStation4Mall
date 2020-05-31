@@ -19,19 +19,20 @@
         <div class="part2">
 
         </div>
-        <a href="" class="index">
+        <a href="index" class="index">
             <i class="layui-icon">&#xe68e;</i>
             首页</a>&nbsp;&nbsp;
-        <a href="myinfo" target="_blank" class="index">
+        <!--        <a href="myinfo" target="_blank" class="index">-->
+        <a href="myinfo" class="index">
             <i class="layui-icon">&#xe770;</i>
             个人中心</a>&nbsp;&nbsp;
         <a href="car" target='_blank' class="index">
             <i class="layui-icon">&#xe657;</i>
             购物车</a>&nbsp;&nbsp;
-        <a href="">
+        <a href="qq">
             <i class="layui-icon">&#xe626;</i>
             在线客服</a>&nbsp;&nbsp;
-        <a href="">
+        <a href="aboutme">
             <i class="layui-icon">&#xe7ae;</i>
             关于我</a>&nbsp;&nbsp;
     </div>
@@ -54,10 +55,10 @@
                 <li class="layui-nav-item"><a href="">ps4周边</a>
                     <dl class="layui-nav-child" id="secondMenu"></dl>
                 </li>
-                <li class="layui-nav-item"><a href="">热销商品</a></li>
-                <li class="layui-nav-item"><a href="">最新上架</a></li>
-                <li class="layui-nav-item"><a href="">官方资讯</a></li>
-                <li class="layui-nav-item"><a href="">精选攻略</a></li>
+                <!--                <li class="layui-nav-item"><a href="">热销商品</a></li>-->
+                <!--                <li class="layui-nav-item"><a href="">最新上架</a></li>-->
+                <!--                <li class="layui-nav-item"><a href="">官方资讯</a></li>-->
+                <!--                <li class="layui-nav-item"><a href="">精选攻略</a></li>-->
             </ul>
         </div>
         <div style="margin-top: 15px">
@@ -89,10 +90,10 @@
         getLoginUser();
         getRushImage();
         $("#fuzzyQuery").click(function () {
-            var name=$("#itemName").val();
-            if(name==null||name.length==0){
+            var name = $("#itemName").val();
+            if (name == null || name.length == 0) {
                 doLoadImg();
-            }else{
+            } else {
                 $.ajax({
                     type: "get",
                     url: "item/getFuzzyQueryItemCount",
@@ -177,7 +178,7 @@
             success: function (res) {
                 var str = "";
                 for (var i = 0; i < res.data.length; i++) {
-                    str += "<dd ><a href='javascript:;' id=" + res.data[i].id + ">" + res.data[i].name + "</a></dd>"
+                    str += "<dd ><a href='javascript:;' id=" + res.data[i].id + " onclick='doOnClick(this)'>" + res.data[i].name + " </a></dd>"
                 }
                 $("#secondMenu").html(str)
             }

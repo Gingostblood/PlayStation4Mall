@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     private EvaluateDao evaluateDao;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void saveUser(WebUser webUser) {
         String salt = UUID.randomUUID().toString();
         SimpleHash simpleHash = new SimpleHash("MD5", webUser.getPassword(), salt, 1);

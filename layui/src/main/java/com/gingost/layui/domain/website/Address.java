@@ -37,6 +37,9 @@ public class Address {
     @Column(name = "postcode")
     private String postcode;
 
+    @Column(name = "is_delete")
+    private Integer isDelete;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIgnore

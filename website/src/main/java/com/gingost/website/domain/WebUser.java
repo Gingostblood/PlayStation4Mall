@@ -18,7 +18,7 @@ public class WebUser extends BaseEntity {
     private Long phone;
     private String salt;
     private String email;
-    private Boolean statu=true;
+    private Integer statu=1;
     private BigDecimal money=BigDecimal.ZERO;
 
 }

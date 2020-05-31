@@ -47,6 +47,11 @@ public class PageController {
         return "signup";
     }
 
+    @GetMapping("forget")
+    public String forget() {
+        return "forget";
+    }
+
     @GetMapping("car")
     public String car() {
         return "sys/car_test";
@@ -68,6 +73,11 @@ public class PageController {
     @GetMapping("addAddress")
     public String addAddress() {
         return "sys/addAddress";
+    }
+
+    @GetMapping("qq")
+    public String qq() {
+        return "sys/qq";
     }
 
 //    @RequestMapping("order")

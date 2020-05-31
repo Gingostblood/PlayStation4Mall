@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>忘记密码</title>
+    <link rel="stylesheet" href="css/register.css">
+</head>
+<body>
+<div id="head">
+    <div id="head_logo"></div>
+</div>
+<div id="middle">
+    <form method="post" style="height: 440px">
+        <table>
+            <tr>
+                <td id="regmsg">忘记密码</td>
+            </tr>
+            <tr>
+                <td id="msg"></td>
+            </tr>
+            <tr>
+                <td><input type="text" id="phone" name="userphone"
+                           placeholder="请输入注册手机号"></td>
+            </tr>
+            <tr>
+                <td class="alertmsg"></td>
+            </tr>
+            <tr>
+                <td><input type="text" id="email" name="useremail"
+                           placeholder="请输入注册邮箱"></td>
+            </tr>
+            <tr>
+                <td class="alertmsg"></td>
+            </tr>
+            <tr>
+                <td><input type="password" id="pwd" name="userpwd"
+                           placeholder="请输入新密码"></td>
+            </tr>
+            <tr>
+                <td class="alertmsg"></td>
+            </tr>
+
+            <tr>
+                <td><input type="password" id="repwd" name="repwd"
+                           placeholder="请确认密码"></td>
+            <tr>
+                <td class="alertmsg"></td>
+            </tr>
+
+            <tr>
+                <td><input type="button" id="ok" value="提交"></td>
+            </tr>
+            <tr>
+                <td class="alertmsg"></td>
+            </tr>
+            <tr>
+                <td><a href="login" id="fuckcss">已有账户？点此处登录</a></td>
+
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="down">
+    <hr>
+    <a href="">关于本人</a>&emsp;|&emsp; <a href="">@Lezzy</a>&emsp;|&emsp; <a
+        href="">@Gingost</a>&emsp;|&emsp; <a href="">SUSE</a>&emsp;|&emsp; <a
+        href="">轻化工大学</a>
+    <hr>
+</div>
+<div id="LezzyGingost">©2019-2020&emsp;最终著作权归Gingost/Lezzy所有</div>
+</body>
+<script src="js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    var phone=$("#phone").val();
+    var email=$("#email").val();
+    var pwd=$("#pwd").val();
+    var repwd=$("#repwd").val();
+
+    $("#ok").click(function () {
+        $.ajax({
+
+        })
+    })
+</script>
+</html>
