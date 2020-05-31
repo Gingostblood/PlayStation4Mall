@@ -3,11 +3,16 @@ package com.gingost.layui.service.impl;
 
 import cn.hutool.json.JSONObject;
 import com.gingost.layui.annotation.Log;
+import com.gingost.layui.domain.vo.LayuiTableVo;
 import com.gingost.layui.repository.LogJpa;
 import com.gingost.layui.service.LogService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,32 +33,32 @@ public class LogServiceImpl implements LogService {
     public void save(String username, String ip, String source, ProceedingJoinPoint joinPoint, com.gingost.layui.domain.system.Log log) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
-        Log aopLog=method.getAnnotation(Log.class);
+        Log aopLog = method.getAnnotation(Log.class);
         //获取方法路径
-        String methodName=joinPoint.getTarget().getClass().getName()+"."+signature.getName()+"()";
-        StringBuilder params=new StringBuilder("{");
+        String methodName = joinPoint.getTarget().getClass().getName() + "." + signature.getName() + "()";
+        StringBuilder params = new StringBuilder("{");
         //参数值
         Object[] argValues = joinPoint.getArgs();
         //参数名称
-        String[] argNames = ((MethodSignature)joinPoint.getSignature()).getParameterNames();
-        if(argValues != null){
+        String[] argNames = ((MethodSignature) joinPoint.getSignature()).getParameterNames();
+        if (argValues != null) {
             for (int i = 0; i < argValues.length; i++) {
                 params.append(" ").append(argNames[i]).append(": ").append(argValues[i]);
             }
         }
         //描述
-        if(log!=null){
+        if (log != null) {
             log.setDescription(aopLog.value());
         }
-        assert log!=null;
+        assert log != null;
         log.setRequestIp(ip);
 
         String loginPath = "login";
-        if(loginPath.equals(signature.getName())){
+        if (loginPath.equals(signature.getName())) {
             try {
                 assert argValues != null;
                 username = new JSONObject(argValues[0]).get("username").toString();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -62,5 +67,12 @@ public class LogServiceImpl implements LogService {
         log.setUsername(username);
         log.setParams(params.toString() + " }");
         logJpa.save(log);
+    }
+
+    @Override
+    public LayuiTableVo<com.gingost.layui.domain.system.Log> findAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size * 4, Sort.Direction.DESC, "id");
+        Page<com.gingost.layui.domain.system.Log> pageList = logJpa.findAll(pageable);
+        return new LayuiTableVo<>((int) pageList.getTotalElements(), pageList.getContent());
     }
 }

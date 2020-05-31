@@ -4,6 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gingost.website.dao.ItemDao">
     <select id="findAllItem" resultType="com.gingost.website.domain.Item">
-select * from item limit #{page},24;
+select * from item where item_stock>0 and statu=1 limit #{page},24;
     </select>
 </mapper>

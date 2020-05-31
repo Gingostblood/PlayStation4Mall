@@ -35,10 +35,10 @@ public class User implements UserDetails {
     private String password;
     @Column(name = "statu")
     private int statu;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @Column(name = "creat_time")
     private Date creatTtime;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @Column(name = "update_time")
     private Date updateTime;
     @Column(name = "phone")

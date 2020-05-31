@@ -46,19 +46,19 @@ public class PageController {
 
     //===========================================order
 
-    @Secured({"ROLE_ITEM", "ROLE_ADMIN"})
+    @Secured({"ROLE_ORDER", "ROLE_ADMIN"})
     @RequestMapping("orders/orders_finish")
     public String order1() {
         return "sys/orders_finish";
     }
 
-    @Secured({"ROLE_ITEM", "ROLE_ADMIN"})
+    @Secured({"ROLE_ORDER", "ROLE_ADMIN"})
     @RequestMapping("orders/orders_error")
     public String order2() {
         return "sys/orders_error";
     }
 
-    @Secured({"ROLE_ITEM", "ROLE_ADMIN"})
+    @Secured({"ROLE_ORDER", "ROLE_ADMIN"})
     @RequestMapping("orders/orders_unfinish")
     public String order3() {
         return "sys/orders_unfinish";
@@ -77,6 +77,12 @@ public class PageController {
     @RequestMapping("users/users_list")
     public String users_list() {
         return "sys/users_list";
+    }
+
+    @Secured("ROLE_ADMIN")
+    @RequestMapping("log/log_list")
+    public String log_list() {
+        return "sys/log_list";
     }
 
     //===========================================

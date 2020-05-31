@@ -1,6 +1,7 @@
 package com.gingost.layui.domain.system;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -73,6 +74,7 @@ public class Log {
      */
     @CreationTimestamp
     @Column(name = "create_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Timestamp createTime;
 
     public Log(String logType, Long time) {
