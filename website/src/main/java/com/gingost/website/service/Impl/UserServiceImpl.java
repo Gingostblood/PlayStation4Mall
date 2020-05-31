@@ -214,4 +214,19 @@ public class UserServiceImpl implements UserService {
         evaluateDao.saveEvaluate(evaluate);
         return 0;
     }
+
+    @Override
+    public void forgetPwd(Long phone, String email, String pwd) {
+        WebUser user=userDao.forgetPwd(phone,email);
+        if (Objects.nonNull(user)){
+            String salt = UUID.randomUUID().toString();
+            SimpleHash simpleHash = new SimpleHash("MD5", pwd, salt, 1);
+            String newpwd = simpleHash.toHex();
+            user.setPassword(newpwd);
+            user.setSalt(salt);
+            userDao.changeUserPwd(user);
+        }else {
+            throw new RuntimeException("请确保您输入的信息与注册时信息一致");
+        }
+    }
 }

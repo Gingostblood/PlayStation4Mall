@@ -54,7 +54,7 @@
                 <td class="alertmsg"></td>
             </tr>
             <tr>
-                <td><a href="login" id="fuckcss">已有账户？点此处登录</a></td>
+                <td><a href="login" id="fuckcss">点此处登录</a></td>
 
             </tr>
         </table>
@@ -71,14 +71,30 @@
 </body>
 <script src="js/jquery-3.4.1.min.js"></script>
 <script type="text/javascript">
-    var phone=$("#phone").val();
-    var email=$("#email").val();
-    var pwd=$("#pwd").val();
-    var repwd=$("#repwd").val();
+
 
     $("#ok").click(function () {
+        var phone=$("#phone").val();
+        var email=$("#email").val();
+        var pwd=$("#pwd").val();
+        var repwd=$("#repwd").val();
+        if (pwd!=repwd){
+            alert("两次输入密码不一致");
+            return false;
+        }
         $.ajax({
-
+            type:'put',
+            url:'user/forgetPwd',
+            async:false,
+            data:{
+                phone:phone,
+                email:email,
+                pwd:pwd
+            },
+            success:function (res) {
+                alert(res.msg);
+                location.href="login"
+            }
         })
     })
 </script>

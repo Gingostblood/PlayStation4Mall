@@ -105,4 +105,10 @@ public class UserController {
     public ResponseEntity goToEvaluate(Evaluate evaluate){
         return new ResponseEntity(userService.goToEvaluate(evaluate),"评论成功");
     }
+
+    @PutMapping("forgetPwd")
+    public ResponseEntity forgetPwd(Long phone,String email,String pwd){
+        userService.forgetPwd(phone,email,pwd);
+        return new ResponseEntity("重置成功");
+    }
 }

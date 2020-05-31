@@ -45,4 +45,7 @@ public interface UserDao {
 
     @Update("update web_user set password=#{password},salt=#{salt},update_time=now() where id=#{id} ")
     int changeUserPwd(WebUser user);
+
+    @Select("select * from web_user where phone=#{phone} and email=#{email}")
+    WebUser forgetPwd(Long phone, String email);
 }

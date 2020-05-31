@@ -43,4 +43,6 @@ public interface UserService {
     List<Map> findEvaluateList(Integer orderid);
 
     int goToEvaluate(Evaluate evaluate);
+
+    void forgetPwd(Long phone, String email, String pwd);
 }

@@ -44,14 +44,14 @@ public class ShiroConfig {
         map.put("/user/saveUser", "anon");
         map.put("/user/getLoginUser", "anon");
         map.put("/user/findOneUser", "anon");
+        map.put("/user/isExit", "anon");
+        map.put("/user/forgetPwd", "anon");
         map.put("/index", "anon");
         map.put("/menu/findMenuByPid", "anon");
+        map.put("/image/findRushImage", "anon");
         map.put("/item/getItemCount", "anon");
         map.put("/item/getItemByid", "anon");
-        map.put("/image/findRushImage", "anon");
         map.put("/item/findAllItem", "anon");
-        map.put("/user/isExit", "anon");
-        map.put("/user/addOneUser", "anon");
         map.put("/signup", "anon");
         map.put("/forget", "anon");
         map.put("/logout", "logout");
