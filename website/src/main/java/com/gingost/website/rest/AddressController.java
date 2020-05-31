@@ -32,4 +32,21 @@ public class AddressController {
         addressService.deleteAddressById(id);
         return new ResponseEntity("删除成功");
     }
+
+    @PostMapping("saveAddress")
+    public void saveAddress(Integer id1,Integer id2,Integer id3,String street,String postcode){
+        addressService.saveAddress(id1,id2,id3,street,postcode);
+    }
+
+    @GetMapping("findAddressById")
+    public ResponseEntity findAddressById(Integer id){
+        return new ResponseEntity(addressService.findAddressById(id));
+    }
+
+    @PutMapping("changeAddress")
+    public ResponseEntity changeAddress(Integer id,String street,String postcode){
+        addressService.changeAddress(id,street,postcode);
+        return new ResponseEntity("更新成功");
+    }
+
 }

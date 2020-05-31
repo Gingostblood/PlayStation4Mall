@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="layui/css/layui.css" media="all">
+</head>
+
+<body>
+<form class="layui-form layui-form-pane">
+    <div class="layui-form-item">
+        <label class="layui-form-label">省</label>
+        <div class="layui-input-inline">
+            <input type="text" id="pro" autocomplete="off" class="layui-input" readonly>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">市</label>
+        <div class="layui-input-inline">
+            <input type="text" id="county" autocomplete="off" class="layui-input" readonly>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">区/县</label>
+        <div class="layui-input-inline">
+            <input type="text" id="city" autocomplete="off" class="layui-input" readonly>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">街道</label>
+        <div class="layui-input-inline">
+            <input type="text" id="street" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">邮政编码</label>
+        <div class="layui-input-inline">
+            <input type="text" id="postcode" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+</form>
+<button type="button" id="ok" class="layui-btn layui-btn-normal layui-btn-radius">提交</button>
+</body>
+
+<script src="layui/layui.all.js"></script>
+<script src="js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    var id='[[${id}]]'
+    layui.use('form', function () {
+        var form = layui.form;
+
+        $.ajax({
+            type:'get',
+            url:'address/findAddressById',
+            async:false,
+            data:{
+                id:id
+            },
+            success:function (res) {
+                $("#pro").val(res.data.province);
+                $("#county").val(res.data.county);
+                $("#city").val(res.data.city);
+                $("#street").val(res.data.street);
+                $("#postcode").val(res.data.postcode);
+            }
+        });
+
+        $("#ok").click(function () {
+            var street=$("#street").val();
+            var postcode=$("#postcode").val();
+
+            $.ajax({
+                type:'put',
+                url:'address/changeAddress',
+                async:false,
+                data:{
+                    id:id,
+                    street:street,
+                    postcode:postcode
+                },
+                success:function (res) {
+                    alert(res.msg);
+                }
+            });
+        })
+    });
+</script>
+
+
+</html>

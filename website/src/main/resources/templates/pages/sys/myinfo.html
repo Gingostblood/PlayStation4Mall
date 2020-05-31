@@ -132,6 +132,9 @@
         <button class="layui-btn layui-btn-sm" lay-event="add">新增收货地址
             <i class="layui-icon">&#xe654;</i>
         </button>
+        <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="refresh">刷新
+            <i class="layui-icon">&#xe666;</i>
+        </button>
     </div>
 </script>
 
@@ -391,25 +394,62 @@
                 , toolbar: '#toolbarDemo'
                 , title: '地址表'
                 // , totalRow: true
-                ,response: {
+                , response: {
                     dataName: 'list'
                 }
                 , cols: [
                     [
-                         {field: 'address', title: '收货地址', width: 300, fixed: 'left'}
-                        ,{field: 'postcode', title: '邮政编码', width: 150,}
-                        ,{fixed: 'right', width: 200, align: 'center', title: '操作', toolbar: '#barDemo'}
+                        {field: 'address', title: '收货地址', width: 300, fixed: 'left'}
+                        , {field: 'postcode', title: '邮政编码', width: 150,}
+                        , {fixed: 'right', width: 200, align: 'center', title: '操作', toolbar: '#barDemo'}
                     ]
                 ]
                 , page: false
             });
+            table.on('toolbar(lezzy)', function (obj) {
+                var test = obj.config;
+                if (obj.event == 'add') {
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.open({
+                            type: 2,
+                            area: ['1200px', '800px'],
+                            btn: '确定',
+                            closeBtn: 2,
+                            anim: 5,
+                            yes: function (index, layero) {
+                                layer.close(index);
+                            },
+                            title: '新增收货地址',
+                            content: 'addAddress'
+                        })
+                    });
+                }
+                if(obj.event=='refresh'){
+                    getAddressTable();
+                }
+            })
 
             table.on('tool(lezzy)', function (obj) {
                 console.log(obj);
                 var data = obj.data.id;
                 var event = obj.event;
-                if (event == 'detail') {
-                    console.log(data);
+                if (event == 'edit') {
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.open({
+                            type: 2,
+                            area: ['500px', '800px'],
+                            btn: '确定',
+                            closeBtn: 2,
+                            anim: 5,
+                            yes: function (index, layero) {
+                                layer.close(index);
+                            },
+                            title: '修改地址',
+                            content: 'changeAddress?id=' + data
+                        })
+                    });
                 } else if (event == 'del') {
                     alert("确定要删除该地址吗？");
                     $.ajax({

@@ -1,5 +1,6 @@
 package com.gingost.website.service;
 
+import com.gingost.website.domain.Address;
 import com.gingost.website.domain.vo.LayuiTableVo;
 
 import java.util.List;
@@ -14,4 +15,10 @@ public interface AddressService {
     LayuiTableVo<Map> findAllAddress();
 
     void deleteAddressById(Integer id);
+
+    void saveAddress(Integer id1,Integer id2,Integer id3,String street,String postcode);
+
+    Address findAddressById(Integer id);
+
+    void changeAddress(Integer id, String street, String postcode);
 }

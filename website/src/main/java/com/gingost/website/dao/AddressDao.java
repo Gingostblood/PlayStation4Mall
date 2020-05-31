@@ -1,10 +1,7 @@
 package com.gingost.website.dao;
 
 import com.gingost.website.domain.Address;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -24,4 +21,10 @@ public interface AddressDao {
 
     @Update("UPDATE address set is_delete=0 WHERE id=#{id}")
     void deleteAddressById(Integer id);
+
+    @Insert("insert into address values(null,#{city},#{county},#{postcode},#{province},#{street},#{userId},#{isDelete})")
+    void saveAddress(Address address);
+
+    @Update("UPDATE address set street=#{street},postcode=#{postcode} WHERE id=#{id}")
+    void changeAddress(@Param("street") String street, @Param("postcode") String postcode,@Param("id") Integer id);
 }

@@ -40,12 +40,14 @@ public class ShiroConfig {
         map.put("/js/**", "anon");
         map.put("/img/**", "anon");
         map.put("/layui/**", "anon");
+        map.put("/getItemInfo", "anon");
         map.put("/user/saveUser", "anon");
         map.put("/user/getLoginUser", "anon");
         map.put("/user/findOneUser", "anon");
         map.put("/index", "anon");
         map.put("/menu/findMenuByPid", "anon");
         map.put("/item/getItemCount", "anon");
+        map.put("/item/getItemByid", "anon");
         map.put("/image/findRushImage", "anon");
         map.put("/item/findAllItem", "anon");
         map.put("/user/isExit", "anon");

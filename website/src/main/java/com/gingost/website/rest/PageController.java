@@ -29,6 +29,14 @@ public class PageController {
         return modelAndView;
     }
 
+    @GetMapping("changeAddress")
+    public ModelAndView changeAddress(String id) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("id", Integer.parseInt(id));
+        modelAndView.setViewName("sys/changeAddress");
+        return modelAndView;
+    }
+
     @GetMapping("signin")
     public String signin() {
         return "signin";
@@ -50,11 +58,16 @@ public class PageController {
     }
 
     @GetMapping("evaluate")
-    public ModelAndView evaluate(Integer id){
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.addObject("id",id);
+    public ModelAndView evaluate(Integer id) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("id", id);
         modelAndView.setViewName("sys/evaluate");
         return modelAndView;
+    }
+
+    @GetMapping("addAddress")
+    public String addAddress() {
+        return "sys/addAddress";
     }
 
 //    @RequestMapping("order")

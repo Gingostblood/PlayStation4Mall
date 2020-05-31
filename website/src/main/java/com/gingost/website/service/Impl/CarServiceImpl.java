@@ -120,7 +120,7 @@ public class CarServiceImpl implements CarService {
         Orders orders=new Orders();
         orders.setAccepter(accepter);
         Address address=addressDao.getUserAddressById(addressId);
-        orders.setAddress(address.getProvince()+"省"+address.getCounty()+"市"+address.getCity()+"县"+address.getStreet()+"街道"+address.getPostcode());
+        orders.setAddress(address.getProvince()+address.getCounty()+address.getCity()+address.getStreet()+"---邮编"+address.getPostcode());
         orders.setPhone(Long.parseLong(phone));
         orders.setUuid(String.valueOf(System.currentTimeMillis()));
         orders.setUserId(user.getId());

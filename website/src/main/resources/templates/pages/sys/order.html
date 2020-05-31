@@ -175,7 +175,7 @@
             success: function (res) {
                 var str = "";
                 for (i = 0; i < res.data.length; i++) {
-                    str += " <input type='radio' name='address' value='"+res.data[i].id+"' title=" + res.data[i].province + "" + res.data[i].county + "" + res.data[i].city + "" + res.data[i].street + "" + res.data[i].postcode + "><br>"
+                    str += " <input type='radio' name='address' value='"+res.data[i].id+"' title=" + res.data[i].province + "" + res.data[i].county + "" + res.data[i].city + "" + res.data[i].street + "----邮政编码：" + res.data[i].postcode + "><br>"
                 }
                 $("#ads").html(str)
                 layui.use('form', function () {
