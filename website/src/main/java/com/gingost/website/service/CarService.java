@@ -32,4 +32,6 @@ public interface CarService {
     WebUser getLoginUser();
 
     void payFortheCar(List<String> ids, Integer addressId,String accepter,String phone);
+
+    void deleteCarsById(List<String> ids);
 }

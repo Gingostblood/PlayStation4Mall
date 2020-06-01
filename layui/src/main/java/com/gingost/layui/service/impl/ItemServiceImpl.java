@@ -35,7 +35,7 @@ public class ItemServiceImpl implements ItemService {
 
     //查询商品列表
     @Override
-    @Cacheable(value = "items")
+    //@Cacheable(value = "items")
     public LayuiTableVo<ItemRespDto> findAll(int page, int size) {
         page = page - 1;
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "creatTime"));
@@ -55,7 +55,7 @@ public class ItemServiceImpl implements ItemService {
     //新增商品
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    @CacheEvict(value = "items",allEntries = true)
+    //@CacheEvict(value = "items",allEntries = true)
     public void saveItem(Item item) {
         try {
             item.setCreatTime(new Date());
@@ -73,7 +73,7 @@ public class ItemServiceImpl implements ItemService {
     //上下架
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    @CacheEvict(value = "items",allEntries = true)
+    //@CacheEvict(value = "items",allEntries = true)
     public void changeStatu(Integer id) {
         Item item = itemJpa.findById(id).orElseGet(Item::new);
         int statu = item.getStatu();
@@ -90,7 +90,7 @@ public class ItemServiceImpl implements ItemService {
     //删除商品
     @Override
     @Transactional
-    @CacheEvict(value = "items",allEntries = true)
+    //@CacheEvict(value = "items",allEntries = true)
     public void deleteItemById(Integer id) {
         itemJpa.deleteById(id);
     }
@@ -98,9 +98,34 @@ public class ItemServiceImpl implements ItemService {
     //批量删除商品
     @Override
     @Transactional
-    @CacheEvict(value = "items",allEntries = true)
+   // @CacheEvict(value = "items",allEntries = true)
     public void deleteItemByIds(ItemQueryCriteria req) {
         List<Item> list = itemJpa.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, req, criteriaBuilder));
         itemJpa.deleteAll(list);
+    }
+
+    @Override
+    public Item findItemById(Integer id) {
+        Item item = itemJpa.findById(id).orElseGet(Item::new);
+        System.out.println(item);
+        return item;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void changeItem(Item item) {
+        Item i = itemJpa.findById(item.getId()).orElseGet(Item::new);
+        i.setItemStock(item.getItemStock());
+        i.setCId(item.getCId());
+        i.setItemInfo(item.getItemInfo());
+        i.setItemLogo(item.getItemLogo());
+        i.setItemName(item.getItemName());
+        i.setItemPrice(item.getItemPrice());
+        i.setUpdateTime(new Date());
+        try {
+            itemJpa.save(i);
+        } catch (Exception e) {
+            throw  new RuntimeException("操作失败");
+        }
     }
 }

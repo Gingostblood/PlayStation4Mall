@@ -54,4 +54,16 @@ public class ItemController {
         itemService.deleteItemByIds(req);
         return new ResponseEntity("批量删除成功");
     }
+
+    @GetMapping("findItemById")
+    public ResponseEntity findItemById(Integer id){
+        return new ResponseEntity(itemService.findItemById(id));
+    }
+
+    @Log("修改商品")
+    @PutMapping("changeItem")
+    public ResponseEntity changeItem(Item item) {
+        itemService.changeItem(item);
+        return new ResponseEntity("修改成功");
+    }
 }

@@ -109,6 +109,6 @@ public class UserController {
     @PutMapping("forgetPwd")
     public ResponseEntity forgetPwd(Long phone,String email,String pwd){
         userService.forgetPwd(phone,email,pwd);
-        return new ResponseEntity("重置成功");
+        return new ResponseEntity("密码重置成功");
     }
 }

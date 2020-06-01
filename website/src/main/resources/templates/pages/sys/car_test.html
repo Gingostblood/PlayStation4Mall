@@ -56,7 +56,7 @@
 </div>
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">删除选中商品</button>
+        <button class="layui-btn layui-btn-sm" lay-event="delete">删除选中商品</button>
     </div>
 </script>
 </body>
@@ -148,22 +148,44 @@
                 console.log($("#arr").val());
                 console.log($("#type").val());
             });
+
+            table.on('toolbar(test)', function (obj) {
+                var test = obj.config;
+                console.log(test);
+                //记住checkStatus(obj.config.id).data;才是获取一个行级对象数组
+                var res = table.checkStatus(obj.config.id).data;
+                console.log(res);
+                if (obj.event == 'delete') {
+                    var array = [];
+                    if (res.length == 0) {
+                        alert("请至少选中一行数据");
+                    } else {
+                        for (i = 0; i < res.length; i++) {
+                            array.push(res[i].id);
+                        }
+                    }
+                    $.ajax({
+                        type:'delete',
+                        url:'car/deleteCarsById',
+                        async: false,
+                        data:{
+                            ids:array
+                        },
+                        success:function (res) {
+                            alert(res.msg);
+                        }
+                    })
+                }
+            })
         });
     }
 
     $("#pay").click(function () {
-        // if($("#type").val()=="yes" ||$("#arr").val()!=""){
-        //     location.href="car/changeCarToOrder?ids="+$('#arr').val()+"&type="+$("#type").val();
-        // }else if($("#type").val()=="no"){
-        //
-        // }else{
-        //     alert("您还没选取任何商品");
-        // }
-        if($("#type").val()=="no"){
+        if ($("#type").val() == "no") {
             alert("您还没选取任何商品");
-        }else if($("#type").val()=="yes" ||$("#arr").val()!=""){
-            location.href="car/changeCarToOrder?ids="+$('#arr').val()+"&type="+$("#type").val();
-        }else{
+        } else if ($("#type").val() == "yes" || $("#arr").val() != "") {
+            location.href = "car/changeCarToOrder?ids=" + $('#arr').val() + "&type=" + $("#type").val();
+        } else {
             alert("您还没选取任何商品");
         }
 

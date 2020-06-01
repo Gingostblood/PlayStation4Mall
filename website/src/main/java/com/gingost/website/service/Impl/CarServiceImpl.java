@@ -134,9 +134,21 @@ public class CarServiceImpl implements CarService {
             orderInfo.setPrice(price);
             orderInfo.setOrderId(orders.getId());
             orderInfoDao.saveOrderInfo(orderInfo);
+            
         }
 
         carDao.deleteCarsById(doHnadlerListFormat(ids));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteCarsById(List<String> ids) {
+        try {
+            carDao.deleteCarsById(doHnadlerListFormat(ids));
+        } catch (Exception e) {
+            throw new RuntimeException("操作失败，请重试");
+        }
+
     }
 
     public List<Integer> doHnadlerListFormat(List<String> ids) {

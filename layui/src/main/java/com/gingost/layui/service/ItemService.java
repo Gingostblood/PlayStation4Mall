@@ -20,4 +20,8 @@ public interface ItemService {
     void deleteItemById(Integer id);
 
     void deleteItemByIds(ItemQueryCriteria req);
+
+    Item findItemById(Integer id);
+
+    void changeItem(Item item);
 }

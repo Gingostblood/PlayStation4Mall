@@ -104,6 +104,8 @@ public class PageController {
         return "sys/users_add";
     }
 
+    //===========================================modelview
+
     @RequestMapping("orders_info")
     public ModelAndView orders_info(Integer id) {
         ModelAndView modelAndView = new ModelAndView();
@@ -117,6 +119,14 @@ public class PageController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("user_id", id);
         modelAndView.setViewName("sys/users_info");
+        return modelAndView;
+    }
+
+    @RequestMapping("goods_update")
+    public ModelAndView goods_update(Integer id) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("id", id);
+        modelAndView.setViewName("sys/goods_update");
         return modelAndView;
     }
 

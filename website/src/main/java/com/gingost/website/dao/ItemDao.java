@@ -4,6 +4,7 @@ import com.gingost.website.domain.Item;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -36,4 +37,5 @@ public interface ItemDao {
 
     @Select("SELECT * FROM item WHERE item_name like #{s} limit #{page},24")
     List<Item> getFuzzyQueryItem(@Param("s") String s,@Param("page") int page);
+
 }
