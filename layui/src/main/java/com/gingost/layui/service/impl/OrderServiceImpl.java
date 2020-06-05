@@ -19,6 +19,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
     //@Cacheable(value = "order_unfinish")
     public LayuiTableVo<Order> findAllByUnfinish(int page, int size) {
         page = page - 1;
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC,"id");
         OrderQueryCriteria req = new OrderQueryCriteria();
         req.setTypes(0);
         Page<Order> all = orderJpa.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, req, criteriaBuilder), pageable);
@@ -101,7 +102,7 @@ public class OrderServiceImpl implements OrderService {
     //@Cacheable(value = "order_finish")
     public LayuiTableVo findFinish(int page, int size) {
         page = page - 1;
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC,"id");
         OrderQueryCriteria req = new OrderQueryCriteria();
         List<Integer> list=new ArrayList<>();
         list.add(1);
@@ -118,7 +119,7 @@ public class OrderServiceImpl implements OrderService {
     //@Cacheable(value = "order_error")
     public LayuiTableVo findError(int page, int size) {
         page = page - 1;
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC,"id");
         OrderQueryCriteria req = new OrderQueryCriteria();
         req.setTypes(2);
         Page<Order> all = orderJpa.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, req, criteriaBuilder), pageable);

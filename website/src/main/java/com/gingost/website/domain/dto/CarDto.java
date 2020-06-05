@@ -25,7 +25,8 @@ public class CarDto {
     public CarDto(Car car,Item item){
         ButtonCss buttonCss=new ButtonCss(car.getItemNum());
         this.id=car.getId();
-        this.itemNumCss=buttonCss.getBtnLeft()+buttonCss.getInput()+buttonCss.getBtnRight();
+        //this.itemNumCss=buttonCss.getBtnLeft()+buttonCss.getInput()+buttonCss.getBtnRight();
+        this.itemNumCss=buttonCss.getInput();
         this.itemName=item.getItemName();
         this.itemPrice=item.getItemPrice();
         this.itemLogo="<img src='"+item.getItemLogo()+"' alt='' width='150px'>";

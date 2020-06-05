@@ -83,6 +83,7 @@ public class CarController {
     }
 
     @DeleteMapping("deleteCarsById")
+    @ResponseBody
     public ResponseEntity deleteCarsById(@RequestParam(value = "ids")List<String> ids){
         carService.deleteCarsById(ids);
         return new ResponseEntity("删除成功");

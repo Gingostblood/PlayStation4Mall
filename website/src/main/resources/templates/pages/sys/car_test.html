@@ -164,15 +164,17 @@
                             array.push(res[i].id);
                         }
                     }
+                    console.log(array)
                     $.ajax({
                         type:'delete',
                         url:'car/deleteCarsById',
                         async: false,
                         data:{
-                            ids:array
+                            ids:array.toString()
                         },
                         success:function (res) {
                             alert(res.msg);
+                            getTable($("#userid").val());
                         }
                     })
                 }

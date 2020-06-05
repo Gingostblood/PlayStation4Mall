@@ -177,9 +177,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String s) {
         User user = userJpa.findUserByUsername(s);
-        if(user==null){
+        if (user == null) {
             throw new UsernameNotFoundException("该用户名尚未被添加");
-        }else if(user.getStatu()==0){
+        } else if (user.getStatu() == 0) {
             throw new UsernameNotFoundException("该账户已被封禁");
         }
         return user;

@@ -92,8 +92,14 @@
                 pwd:pwd
             },
             success:function (res) {
-                alert(res.msg);
-                location.href="login"
+                if(res.code==0){
+                    alert(res.msg);
+                    location.href="login"
+                }else {
+                    alert(res.msg);
+                }
+
+
             }
         })
     })

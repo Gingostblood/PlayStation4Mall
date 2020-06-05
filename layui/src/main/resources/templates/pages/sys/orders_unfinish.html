@@ -41,8 +41,9 @@
                     dataName: 'list'//修改layui封装的参数名limit->size
                 }
                 , cols: [
-                    [{field: 'id', title: '序号', width: 80, fixed: 'left'}
-                        , {field: 'uuid', title: '订单编号', width: 150}
+                    [
+                        // {field: 'id', title: '序号', width: 80,fixed: 'left'}
+                        {field: 'uuid', title: '订单编号', width: 150,fixed: 'left'}
                         , {field: 'creatTime', title: '创建时间', width: 180, sort: true}
                         , {field: 'address', title: '收货地址', width: 500}
                         , {field: 'accepter', title: '收件人', width: 100}

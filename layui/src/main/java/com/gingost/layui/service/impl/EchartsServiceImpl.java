@@ -21,7 +21,7 @@ public class EchartsServiceImpl implements EchartsService {
     private ItemJpa itemJpa;
 
     @Override
-    @Cacheable("itemBar")
+    //@Cacheable("itemBar")
     public ItemEchartsBarVo toBar(Integer id) {
         ItemEchartsBarVo itemEchartsBarVo =new ItemEchartsBarVo();
         List<Object[]> objectArrayList = itemJpa.findItemEchartsVo(id);
@@ -37,7 +37,7 @@ public class EchartsServiceImpl implements EchartsService {
     }
 
     @Override
-    @Cacheable("itemPie")
+    //@Cacheable("itemPie")
     public List<ItemEchartsPieVo> toPie() {
         List<Object[]> objectArrayList = itemJpa.findItemEchartsVo();
         List<ItemEchartsPieVo> itemEchartsPieVoList=new ArrayList<>();
